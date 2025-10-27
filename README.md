@@ -202,8 +202,8 @@ Pat3on's code is transparent and auditable. All smart contracts are verified on 
 - **Gas Costs** - Minimal due to Superfluid streaming
 - **Withdrawal Fees** - Standard Ethereum gas fees
 
-### Why It's Cheaper
-Traditional platforms like Patreon take 8-12% + payment processing fees. With Pat3on, there are no middlemen taking huge cuts - just small blockchain transaction fees.
+### Platform Economics
+Pat3on aims to minimize platform fees by leveraging blockchain technology, reducing the need for traditional payment processors and intermediaries. This means more money goes directly to creators.
 
 ---
 
@@ -302,21 +302,7 @@ Yes! Subscription services and cryptocurrency are both legal. However, tax laws 
 
 ---
 
-## 🏆 What Makes Pat3on Different?
-
-| Feature | Pat3on | Patreon | OnlyFans |
-|---------|-----------|---------|----------|
-| Platform Fee | ~2-3% | 8-12% | 20% |
-| Global Access | ✅ Worldwide | ⚠️ Limited | ⚠️ Limited |
-| Payment Method | Crypto | Credit Card | Credit Card |
-| Censorship | ❌ Resistant | ✅ Possible | ✅ Possible |
-| Payment Speed | ⚡ Real-time | 📅 Monthly | 📅 Weekly |
-| Account Control | 🔐 You own it | ⚠️ Can be banned | ⚠️ Can be banned |
-| Transparency | ✅ Full | ❌ Limited | ❌ Limited |
-
----
-
-## 🎉 Vision
+##  Vision
 
 Pat3on aims to democratize content monetization by putting power back in the hands of creators and their communities. We believe in:
 
