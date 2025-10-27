@@ -1,0 +1,14 @@
+{
+  "network": "localhost",
+  "contractName": "MockUSDC",
+  "contractAddress": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+  "deployer": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+  "deployedAt": "2025-10-27T19:12:36.701Z",
+  "transactionHash": "0xce68917cda88142947cea8c1a86ce2f995417a352810bf9c14fd2ade197895f7",
+  "tokenDetails": {
+    "name": "Mock USDC",
+    "symbol": "mUSDC",
+    "decimals": "6",
+    "initialSupply": "1000000"
+  }
+}

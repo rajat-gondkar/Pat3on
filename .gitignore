@@ -1,0 +1,247 @@
+# ================================
+# PAT3ON PROJECT .gitignore
+# ================================
+
+# ================================
+# CRITICAL - NEVER COMMIT SECRETS
+# ================================
+# Environment variables with secrets
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+*.env
+
+# Private keys and wallets
+*.key
+*.pem
+*private*key*
+wallet.json
+keystore/
+
+# ================================
+# NODE.JS
+# ================================
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Package manager lock files (optional - remove if you want to commit them)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# ================================
+# BACKEND
+# ================================
+# Logs
+logs/
+*.log
+backend/logs/
+backend/*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Directory for instrumented libs
+lib-cov/
+
+# Coverage directory
+coverage/
+*.lcov
+.nyc_output/
+
+# Database
+*.sqlite
+*.sqlite3
+*.db
+
+# ================================
+# SMART CONTRACTS / HARDHAT
+# ================================
+# Hardhat
+contracts/cache/
+contracts/artifacts/
+contracts/typechain/
+contracts/typechain-types/
+
+# Deployment files with addresses (optional - may want to keep)
+contracts/deployments/localhost/
+contracts/deployments/hardhat/
+
+# Gas reports
+contracts/gas-report.txt
+
+# Contract flattened files
+contracts/flattened/
+
+# ================================
+# FRONTEND / NEXT.JS
+# ================================
+# Next.js build output
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/dist/
+
+# Static files
+frontend/.vercel
+frontend/.netlify
+
+# PWA files
+frontend/public/sw.js
+frontend/public/workbox-*.js
+frontend/public/worker-*.js
+frontend/public/fallback-*.js
+
+# ================================
+# TYPESCRIPT
+# ================================
+*.tsbuildinfo
+*.d.ts.map
+
+# ================================
+# TESTING
+# ================================
+# Jest
+*.test.js.snap
+__snapshots__/
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
+
+# ================================
+# IDEs / EDITORS
+# ================================
+# VSCode
+.vscode/settings.json
+.vscode/launch.json
+.vscode/*.code-snippets
+.vscode/.react/
+
+# Keep recommended extensions
+!.vscode/extensions.json
+
+# JetBrains IDEs
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# ================================
+# OPERATING SYSTEM
+# ================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ================================
+# TEMPORARY FILES
+# ================================
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*.cache
+
+# ================================
+# DOCUMENTATION (keep committed)
+# ================================
+# Keep all markdown files EXCEPT those with secrets
+# *.md  # Don't uncomment this!
+
+# ================================
+# MISC
+# ================================
+# Debug files
+.debug/
+dump.rdb
+
+# Optional: Ignore large files
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# Backup files
+backup/
+*.backup
+
+# Build outputs
+build/
+dist/
+*.build
+
+# ================================
+# PROJECT-SPECIFIC
+# ================================
+# Keep deployment info but not on localhost
+!contracts/deployments/sepolia/
+!contracts/deployments/mumbai/
+!contracts/deployments/mainnet/
+
+# Keep example files
+!.env.example
+!contracts/.env.example
+!backend/.env.example
+!frontend/.env.example
+
+# ================================
+# SECURITY NOTE
+# ================================
+# This file prevents committing:
+# 1. Private keys (MOST IMPORTANT)
+# 2. API keys
+# 3. Database credentials
+# 4. JWT secrets
+# 5. Encryption keys
+# 6. RPC URLs with API keys
+# 7. Any .env files
+#
+# ALWAYS review files before committing!
+# Use: git status
+# Then: git diff <file>
+# ================================

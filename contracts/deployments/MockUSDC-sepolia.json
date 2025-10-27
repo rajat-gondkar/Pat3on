@@ -1,0 +1,14 @@
+{
+  "network": "sepolia",
+  "contractName": "MockUSDC",
+  "contractAddress": "0xB9FCc8eE949A9F5F65031828Bf375BB2E116A7be",
+  "deployer": "0x99a35A41147A49515cBC4794779C0F6beBE2c95D",
+  "deployedAt": "2025-10-27T19:48:26.762Z",
+  "transactionHash": "0xc3e7597ae318d45acdd724c00fc00f14812bb33e8662017a205734d9a49fae50",
+  "tokenDetails": {
+    "name": "Mock USDC",
+    "symbol": "mUSDC",
+    "decimals": "6",
+    "initialSupply": "1000000"
+  }
+}

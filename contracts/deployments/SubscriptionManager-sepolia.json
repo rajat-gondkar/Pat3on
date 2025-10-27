@@ -1,0 +1,9 @@
+{
+  "network": "sepolia",
+  "contractName": "SubscriptionManager",
+  "contractAddress": "0xea0f4a36D5949818BE26F94A10f5a5766Cbd1B2c",
+  "paymentToken": "0xB9FCc8eE949A9F5F65031828Bf375BB2E116A7be",
+  "deployer": "0x99a35A41147A49515cBC4794779C0F6beBE2c95D",
+  "deployedAt": "2025-10-27T19:49:26.058Z",
+  "transactionHash": "0x78f6e0edc568f3a815bb7f68f61ab22acea631b50379b516561deb552939932b"
+}

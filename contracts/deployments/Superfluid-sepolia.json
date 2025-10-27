@@ -1,0 +1,12 @@
+{
+  "network": "sepolia",
+  "superfluidHost": "0x109412E3C84f0539b43d39dB691B08c90f58dC7c",
+  "fUSDCxAddress": "0x42bb40bF79730451B11f6De1CbA222F17b87Afd7",
+  "mockUSDCAddress": "0xf9F41eFdb8AF8084b7BcFb70fBcbece6FBf28542",
+  "note": "Use fUSDCx for testing. To create MockUSDCx wrapper, use Superfluid's SuperTokenFactory",
+  "resources": {
+    "superfluidApp": "https://app.superfluid.finance/",
+    "documentation": "https://docs.superfluid.finance/",
+    "console": "https://console.superfluid.finance/sepolia"
+  }
+}

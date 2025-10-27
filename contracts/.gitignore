@@ -1,0 +1,24 @@
+# Hardhat files
+cache/
+artifacts/
+node_modules/
+
+# Environment variables
+.env
+
+# TypeChain
+typechain/
+typechain-types/
+
+# Coverage
+coverage/
+coverage.json
+
+# Hardhat Ignition
+ignition/deployments/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log

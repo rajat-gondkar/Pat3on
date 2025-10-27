@@ -1,0 +1,9 @@
+{
+  "network": "sepolia",
+  "contractName": "SuperfluidSubscriptionManager",
+  "contractAddress": "0x1709EcE1B4888B5f64621Da40fCE0F1C2770067A",
+  "paymentToken": "0x42bb40bF79730451B11f6De1CbA222F17b87Afd7",
+  "deployer": "0x99a35A41147A49515cBC4794779C0F6beBE2c95D",
+  "deployedAt": "2025-10-27T20:06:01.284Z",
+  "transactionHash": "0xed7c1a4333aa7b48b16bd553ab7a34d377272351c0e766c6593aef453a3121d9"
+}

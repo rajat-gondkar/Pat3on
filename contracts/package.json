@@ -1,0 +1,53 @@
+{
+  "name": "pat3on-contracts",
+  "version": "1.0.0",
+  "description": "Smart contracts for Pat3on platform with Superfluid streaming",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "node": "hardhat node",
+    "deploy": "hardhat run scripts/deployMockUSDC.js --network localhost",
+    "deploy:local": "hardhat run scripts/deployMockUSDC.js --network localhost",
+    "deploy:sepolia": "hardhat run scripts/deployMockUSDC.js --network sepolia",
+    "deploy:mumbai": "hardhat run scripts/deployMockUSDC.js --network mumbai",
+    "deploy:subscription": "hardhat run scripts/deploySubscriptionManager.js --network sepolia",
+    "mint": "hardhat run scripts/mintTokens.js --network localhost",
+    "mint:sepolia": "hardhat run scripts/mintTokens.js --network sepolia",
+    "mint:mumbai": "hardhat run scripts/mintTokens.js --network mumbai",
+    "setup:superfluid": "hardhat run scripts/setupSuperfluid.js --network sepolia",
+    "deploy:superfluid": "hardhat run scripts/deploySuperfluidSubscriptionManager.js --network sepolia"
+  },
+  "keywords": [
+    "blockchain",
+    "smart-contracts",
+    "solidity",
+    "hardhat",
+    "superfluid",
+    "streaming-payments"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
+    "@nomicfoundation/hardhat-ethers": "^3.0.0",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.0",
+    "@typechain/ethers-v6": "^0.5.0",
+    "@typechain/hardhat": "^9.0.0",
+    "@types/chai": "^4.2.0",
+    "@types/mocha": ">=9.1.0",
+    "chai": "^4.3.10",
+    "ethers": "^6.4.0",
+    "hardhat": "^2.19.4",
+    "hardhat-gas-reporter": "^1.0.8",
+    "solidity-coverage": "^0.8.1",
+    "typechain": "^8.3.0"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.9.3",
+    "@superfluid-finance/ethereum-contracts": "^1.7.0",
+    "dotenv": "^16.3.1"
+  }
+}
