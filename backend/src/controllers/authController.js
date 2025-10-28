@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
+const walletService = require('../services/walletService');
 
 /**
  * Generate JWT Token
@@ -48,22 +49,73 @@ exports.register = async (req, res) => {
       });
     }
 
-    // Create new user
+    // Generate custodial wallet BEFORE creating user
+    console.log('🔐 Generating custodial wallet...');
+    const walletData = await walletService.generateCustodialWallet();
+    console.log(`✅ Wallet generated: ${walletData.address}`);
+
+    // Create new user with wallet info
     const user = new User({
       email,
       password, // Will be hashed by the User model pre-save hook
-      role
+      role,
+      custodialWallet: {
+        address: walletData.address,
+        encryptedPrivateKey: walletData.encryptedPrivateKey,
+        createdAt: new Date()
+      },
+      hasCustodialWallet: true
     });
 
     await user.save();
+    console.log(`✅ User created: ${user._id}`);
+
+    // Fund wallet with 0.001 ETH for gas fees
+    console.log('💰 Funding wallet with ETH...');
+    try {
+      const fundingTx = await walletService.fundNewWallet(walletData.address);
+      user.custodialWallet.fundedAt = new Date();
+      user.custodialWallet.initialFundingTxHash = fundingTx.hash;
+      await user.save();
+      console.log(`✅ Wallet funded: ${fundingTx.hash}`);
+    } catch (fundingError) {
+      console.error('⚠️  Wallet funding failed:', fundingError.message);
+      // Continue even if funding fails - user can still be created
+    }
+
+    // Generate JWT token
+    const token = generateToken(user._id, user.role);
 
     res.status(201).json({
       success: true,
-      message: 'User registered successfully',
+      message: 'Registration successful - SAVE YOUR PRIVATE KEY NOW',
       data: {
-        userId: user._id,
-        email: user.email,
-        role: user.role
+        token,
+        user: {
+          id: user._id,
+          email: user.email,
+          role: user.role,
+          walletAddress: walletData.address,
+          hasCustodialWallet: true
+        },
+        // ⚠️ CRITICAL: Send plaintext private key ONCE during registration
+        wallet: {
+          privateKey: walletData.privateKey,
+          mnemonic: walletData.mnemonic,
+          address: walletData.address
+        },
+        // Security warnings for frontend to display
+        warning: {
+          critical: '🔐 SAVE THIS PRIVATE KEY NOW',
+          notice: 'This will NEVER be shown again',
+          instructions: [
+            'Write it down on paper or save it securely',
+            'Store it in a safe place',
+            'Never share it with anyone',
+            'We cannot recover it if you lose it',
+            'You need this to recover your wallet'
+          ]
+        }
       }
     });
 
@@ -116,6 +168,22 @@ exports.login = async (req, res) => {
     // Generate JWT token
     const token = generateToken(user._id, user.role);
 
+    // Get wallet balances if user has custodial wallet
+    let walletBalances = null;
+    if (user.hasCustodialWallet && user.custodialWallet?.address) {
+      try {
+        const ethBalance = await walletService.getETHBalance(user.custodialWallet.address);
+        const usdcBalance = await walletService.getMockUSDCBalance(user.custodialWallet.address);
+        walletBalances = {
+          eth: ethBalance,
+          usdc: usdcBalance
+        };
+      } catch (error) {
+        console.error('Error fetching balances:', error.message);
+        // Continue without balances if fetch fails
+      }
+    }
+
     res.json({
       success: true,
       message: 'Login successful',
@@ -125,9 +193,11 @@ exports.login = async (req, res) => {
           id: user._id,
           email: user.email,
           role: user.role,
-          walletAddress: user.walletAddress,
-          isWalletLinked: user.isWalletLinked
-        }
+          walletAddress: user.custodialWallet?.address || user.walletAddress,
+          isWalletLinked: user.isWalletLinked,
+          hasCustodialWallet: user.hasCustodialWallet
+        },
+        balances: walletBalances
       }
     });
 
@@ -157,15 +227,32 @@ exports.getMe = async (req, res) => {
       });
     }
 
+    // Get wallet balances if user has custodial wallet
+    let walletBalances = null;
+    if (user.hasCustodialWallet && user.custodialWallet?.address) {
+      try {
+        const ethBalance = await walletService.getETHBalance(user.custodialWallet.address);
+        const usdcBalance = await walletService.getMockUSDCBalance(user.custodialWallet.address);
+        walletBalances = {
+          eth: ethBalance,
+          usdc: usdcBalance
+        };
+      } catch (error) {
+        console.error('Error fetching balances:', error.message);
+      }
+    }
+
     res.json({
       success: true,
       data: {
         id: user._id,
         email: user.email,
         role: user.role,
-        walletAddress: user.walletAddress,
+        walletAddress: user.custodialWallet?.address || user.walletAddress,
         isWalletLinked: user.isWalletLinked,
-        createdAt: user.createdAt
+        hasCustodialWallet: user.hasCustodialWallet,
+        createdAt: user.createdAt,
+        balances: walletBalances
       }
     });
 

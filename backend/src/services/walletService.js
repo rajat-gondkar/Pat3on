@@ -61,7 +61,7 @@ function decryptPrivateKey(encryptedData) {
 
 /**
  * Generate a new custodial wallet for a user
- * @returns {Object} wallet details (address, encrypted private key)
+ * @returns {Object} wallet details (address, encrypted private key, plaintext private key)
  */
 async function generateCustodialWallet() {
   // Generate new random wallet
@@ -73,6 +73,7 @@ async function generateCustodialWallet() {
   return {
     address: wallet.address,
     encryptedPrivateKey: encryptedKey,
+    privateKey: wallet.privateKey, // ⚠️ Return plaintext for one-time display during registration
     mnemonic: wallet.mnemonic ? wallet.mnemonic.phrase : null // Optional: store for recovery
   };
 }
