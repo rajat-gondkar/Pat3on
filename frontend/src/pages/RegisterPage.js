@@ -107,7 +107,7 @@ const RegisterPage = () => {
   if (showPrivateKey && walletData) {
     return (
       <div className="min-h-screen flex items-center justify-center px-6 py-12">
-        <div className="max-w-2xl w-full bg-dark-secondary rounded-2xl shadow-2xl p-10 border border-dark-border">
+        <div className="max-w-2xl w-full bg-dark-secondary rounded-sm shadow-2xl p-10 border border-dark-border">
           {/* Header */}
           <div className="text-center mb-8">
             <div className="text-5xl mb-4">🔐</div>
@@ -120,7 +120,7 @@ const RegisterPage = () => {
           </div>
 
           {/* Warning Box */}
-          <div className="bg-red-500/10 border-2 border-red-500/40 rounded-xl p-6 mb-8">
+          <div className="bg-red-500/10 border-2 border-red-500/40 rounded-sm p-6 mb-8">
             <h3 className="text-xl font-bold text-red-400 mb-3 flex items-center">
               <span className="text-2xl mr-2">⚠️</span>
               IMPORTANT - READ CAREFULLY
@@ -138,7 +138,7 @@ const RegisterPage = () => {
             <label className="block text-sm font-medium text-gray-400 mb-2">
               Your Wallet Address
             </label>
-            <div className="bg-dark-primary p-4 rounded-lg border border-dark-border">
+            <div className="bg-dark-primary p-4 rounded-sm border border-dark-border">
               <code className="text-navy-400 text-sm break-all">
                 {walletData.address}
               </code>
@@ -150,7 +150,7 @@ const RegisterPage = () => {
             <label className="block text-sm font-medium text-gray-400 mb-2">
               Your Private Key
             </label>
-            <div className="bg-dark-primary p-4 rounded-lg border border-dark-border mb-3">
+            <div className="bg-dark-primary p-4 rounded-sm border border-dark-border mb-3">
               <code className="text-green-400 text-xs break-all">
                 {walletData.privateKey}
               </code>
@@ -158,13 +158,13 @@ const RegisterPage = () => {
             <div className="flex space-x-3">
               <button
                 onClick={handleCopyPrivateKey}
-                className="flex-1 bg-navy-600 hover:bg-navy-700 text-white px-4 py-3 rounded-lg transition-all flex items-center justify-center font-semibold shadow-lg"
+                className="flex-1 bg-white hover:bg-gray-200 text-white px-4 py-3 rounded-sm transition-all flex items-center justify-center font-semibold shadow-lg"
               >
                 {copied ? '✓ Copied!' : '📋 Copy Private Key'}
               </button>
               <button
                 onClick={handleDownloadPrivateKey}
-                className="flex-1 bg-dark-accent hover:bg-dark-border text-white px-4 py-3 rounded-lg transition-all flex items-center justify-center font-semibold"
+                className="flex-1 bg-dark-accent hover:bg-dark-border text-white px-4 py-3 rounded-sm transition-all flex items-center justify-center font-semibold"
               >
                 💾 Download as File
               </button>
@@ -177,7 +177,7 @@ const RegisterPage = () => {
               <label className="block text-sm font-medium text-gray-400 mb-2">
                 Recovery Phrase (Mnemonic)
               </label>
-              <div className="bg-dark-primary p-4 rounded-lg border border-dark-border">
+              <div className="bg-dark-primary p-4 rounded-sm border border-dark-border">
                 <code className="text-yellow-400 text-sm break-all">
                   {walletData.mnemonic}
                 </code>
@@ -186,7 +186,7 @@ const RegisterPage = () => {
           )}
 
           {/* Security Instructions */}
-          <div className="bg-dark-primary rounded-lg p-6 mb-8 border border-dark-border">
+          <div className="bg-dark-primary rounded-sm p-6 mb-8 border border-dark-border">
             <h4 className="text-lg font-semibold text-white mb-4">
               🛡️ Security Instructions
             </h4>
@@ -216,7 +216,7 @@ const RegisterPage = () => {
 
           {/* Confirmation Checkbox */}
           <div className="mb-8">
-            <label className="flex items-start space-x-3 cursor-pointer bg-dark-accent p-4 rounded-lg border border-dark-border hover:border-navy-500 transition-colors">
+            <label className="flex items-start space-x-3 cursor-pointer bg-dark-accent p-4 rounded-sm border border-dark-border hover:border-white transition-colors">
               <input
                 type="checkbox"
                 checked={privateKeySaved}
@@ -235,9 +235,9 @@ const RegisterPage = () => {
           <button
             onClick={handleContinue}
             disabled={!privateKeySaved}
-            className={`w-full py-4 rounded-lg font-semibold text-white transition-all shadow-lg ${
+            className={`w-full py-4 rounded-sm font-semibold text-white transition-all shadow-lg ${
               privateKeySaved
-                ? 'bg-navy-600 hover:bg-navy-700 hover:shadow-navy-600/30'
+                ? 'bg-white hover:bg-gray-200 hover:shadow-navy-600/30'
                 : 'bg-gray-600 cursor-not-allowed opacity-50'
             }`}
           >
@@ -250,14 +250,14 @@ const RegisterPage = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-6 py-12">
-      <div className="max-w-md w-full bg-dark-secondary rounded-2xl shadow-2xl p-10 border border-dark-border">
+      <div className="max-w-md w-full bg-dark-secondary rounded-sm shadow-2xl p-10 border border-dark-border">
         <div className="text-center mb-8">
           <h2 className="text-3xl font-bold text-white mb-2">Create Account</h2>
           <p className="text-gray-400">Join Pat3on and start your Web3 journey</p>
         </div>
 
         {error && (
-          <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-lg mb-6 text-sm">
+          <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-sm mb-6 text-sm">
             {error}
           </div>
         )}
@@ -274,7 +274,7 @@ const RegisterPage = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 bg-dark-primary border border-dark-border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-navy-500 focus:ring-2 focus:ring-navy-500/20 transition-all"
+              className="w-full px-4 py-3 bg-dark-primary border border-dark-border rounded-sm text-white placeholder-gray-500 focus:outline-none focus:border-white focus:ring-2 focus:ring-navy-500/20 transition-all"
               placeholder="you@example.com"
             />
           </div>
@@ -290,7 +290,7 @@ const RegisterPage = () => {
               value={formData.password}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 bg-dark-primary border border-dark-border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-navy-500 focus:ring-2 focus:ring-navy-500/20 transition-all"
+              className="w-full px-4 py-3 bg-dark-primary border border-dark-border rounded-sm text-white placeholder-gray-500 focus:outline-none focus:border-white focus:ring-2 focus:ring-navy-500/20 transition-all"
               placeholder="Minimum 6 characters"
             />
           </div>
@@ -306,7 +306,7 @@ const RegisterPage = () => {
               value={formData.confirmPassword}
               onChange={handleChange}
               required
-              className="w-full px-4 py-3 bg-dark-primary border border-dark-border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-navy-500 focus:ring-2 focus:ring-navy-500/20 transition-all"
+              className="w-full px-4 py-3 bg-dark-primary border border-dark-border rounded-sm text-white placeholder-gray-500 focus:outline-none focus:border-white focus:ring-2 focus:ring-navy-500/20 transition-all"
               placeholder="Re-enter your password"
             />
           </div>
@@ -327,9 +327,9 @@ const RegisterPage = () => {
                   className="hidden"
                 />
                 <div
-                  className={`p-4 rounded-lg border-2 text-center transition-all ${
+                  className={`p-4 rounded-sm border-2 text-center transition-all ${
                     formData.role === 'user'
-                      ? 'border-navy-500 bg-navy-500/20'
+                      ? 'border-white bg-navy-500/20'
                       : 'border-dark-border bg-dark-primary hover:border-dark-accent'
                   }`}
                 >
@@ -351,9 +351,9 @@ const RegisterPage = () => {
                   className="hidden"
                 />
                 <div
-                  className={`p-4 rounded-lg border-2 text-center transition-all ${
+                  className={`p-4 rounded-sm border-2 text-center transition-all ${
                     formData.role === 'author'
-                      ? 'border-navy-500 bg-navy-500/20'
+                      ? 'border-white bg-navy-500/20'
                       : 'border-dark-border bg-dark-primary hover:border-dark-accent'
                   }`}
                 >
@@ -371,7 +371,7 @@ const RegisterPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-navy-600 hover:bg-navy-700 text-white py-3 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-navy-600/30"
+            className="w-full bg-white hover:bg-gray-200 text-white py-3 rounded-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-navy-600/30"
           >
             {loading ? 'Creating Account...' : 'Create Account'}
           </button>
@@ -379,7 +379,7 @@ const RegisterPage = () => {
 
         <p className="text-center text-gray-400 mt-6 text-sm">
           Already have an account?{' '}
-          <Link to="/login" className="text-navy-500 hover:text-navy-400 font-semibold transition-colors">
+          <Link to="/login" className="text-white hover:text-gray-300 font-semibold transition-colors">
             Login here
           </Link>
         </p>

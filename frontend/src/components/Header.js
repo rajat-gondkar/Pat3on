@@ -12,72 +12,57 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-dark-secondary border-b border-dark-border backdrop-blur-sm bg-opacity-90 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+    <header className="bg-black border-b border-dark-border sticky top-0 z-50 backdrop-blur-sm bg-black/90">
+      <div className="max-w-7xl mx-auto px-6 py-4">
+        <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 group">
-            <span className="text-2xl font-bold text-white tracking-tight">
-              Pat3on
-            </span>
+          <Link to="/" className="text-2xl font-bold text-white hover:text-gray-300 transition-colors">
+            Pat3on
           </Link>
 
-          {/* Right side */}
-          <div className="flex items-center space-x-6">
+          {/* Navigation */}
+          <nav className="flex items-center space-x-6">
             {isAuthenticated ? (
               <>
-                {/* Wallet Balances - Minimal design */}
+                {/* Balance Display - Top Right */}
                 {balances && (
-                  <div className="hidden md:flex items-center space-x-4 text-xs text-gray-400 bg-dark-accent px-4 py-2 rounded-lg">
-                    <div className="flex items-center space-x-1.5">
-                      <span className="text-gray-500">ETH:</span>
-                      <span className="font-mono text-gray-300 font-medium">
-                        {parseFloat(balances.eth).toFixed(4)}
-                      </span>
-                    </div>
-                    <div className="h-3 w-px bg-dark-border"></div>
-                    <div className="flex items-center space-x-1.5">
-                      <span className="text-gray-500">mUSDC:</span>
-                      <span className="font-mono text-gray-300 font-medium">
-                        {parseFloat(balances.usdc).toFixed(2)}
-                      </span>
-                    </div>
+                  <div className="bg-dark-accent px-4 py-2 rounded-full text-xs text-gray-300 border border-dark-border">
+                    <span className="font-medium">ETH:</span> {parseFloat(balances.eth).toFixed(4)}
+                    <span className="mx-2">|</span>
+                    <span className="font-medium">mUSDC:</span> {parseFloat(balances.usdc).toFixed(2)}
                   </div>
                 )}
-
-                {/* User menu */}
-                <div className="flex items-center space-x-3">
-                  <Link
-                    to="/dashboard"
-                    className="text-gray-400 hover:text-white text-sm font-medium transition-colors"
-                  >
-                    Dashboard
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="bg-dark-accent hover:bg-dark-border text-gray-300 hover:text-white px-4 py-2 rounded-lg text-sm font-medium transition-all"
-                  >
-                    Logout
-                  </button>
-                </div>
+                
+                <Link
+                  to="/dashboard"
+                  className="text-white hover:text-gray-300 font-medium transition-colors"
+                >
+                  Dashboard
+                </Link>
+                <button
+                  onClick={logout}
+                  className="bg-transparent hover:bg-white/10 border border-white text-white px-5 py-2 font-medium transition-all"
+                >
+                  Logout
+                </button>
               </>
             ) : (
               <>
                 <Link
                   to="/login"
-                  className="text-gray-400 hover:text-white text-sm font-medium transition-colors"
+                  className="text-white hover:text-gray-300 font-medium transition-colors"
                 >
                   Login
                 </Link>
                 <Link
                   to="/register"
-                  className="bg-navy-600 hover:bg-navy-700 text-white px-5 py-2 rounded-lg text-sm font-medium transition-all shadow-lg hover:shadow-navy-600/20"
+                  className="bg-white hover:bg-gray-200 text-black px-6 py-2 font-medium transition-all"
                 >
-                  Sign Up
+                  Register
                 </Link>
               </>
             )}
-          </div>
+          </nav>
         </div>
       </div>
     </header>

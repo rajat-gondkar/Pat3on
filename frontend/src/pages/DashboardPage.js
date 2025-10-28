@@ -24,7 +24,7 @@ const DashboardPage = () => {
     <div className="min-h-screen py-12 px-6">
       <div className="max-w-6xl mx-auto">
         {/* Welcome Section */}
-        <div className="bg-dark-secondary rounded-xl shadow-2xl p-8 mb-8 border border-dark-border">
+        <div className="bg-dark-secondary rounded-sm shadow-2xl p-8 mb-8 border border-dark-border">
           <h1 className="text-3xl font-bold text-white mb-2">
             Welcome back, {user.email}!
           </h1>
@@ -36,7 +36,7 @@ const DashboardPage = () => {
         {/* Wallet Info */}
         <div className="grid md:grid-cols-2 gap-6 mb-8">
           {/* Wallet Address */}
-          <div className="bg-dark-secondary rounded-xl shadow-xl p-6 border border-dark-border">
+          <div className="bg-dark-secondary rounded-sm shadow-xl p-6 border border-dark-border">
             <h2 className="text-xl font-semibold text-white mb-4 flex items-center">
               <span className="mr-2">👛</span>
               Your Wallet
@@ -44,20 +44,20 @@ const DashboardPage = () => {
             <div className="space-y-3">
               <div>
                 <label className="text-sm text-gray-400">Wallet Address</label>
-                <div className="bg-dark-primary p-3 rounded-lg mt-2 border border-dark-border">
-                  <code className="text-navy-400 text-xs break-all">
+                <div className="bg-dark-primary p-3 rounded-sm mt-2 border border-dark-border">
+                  <code className="text-gray-400 text-xs break-all">
                     {user.walletAddress}
                   </code>
                 </div>
               </div>
-              <div className="text-xs text-gray-500 bg-dark-accent p-3 rounded-lg">
+              <div className="text-xs text-gray-500 bg-dark-accent p-3 rounded-sm">
                 💡 You can use this address to deposit ETH or mUSDC
               </div>
             </div>
           </div>
 
           {/* Balances */}
-          <div className="bg-dark-secondary rounded-xl shadow-xl p-6 border border-dark-border">
+          <div className="bg-dark-secondary rounded-sm shadow-xl p-6 border border-dark-border">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold text-white flex items-center">
                 <span className="mr-2">💰</span>
@@ -65,14 +65,14 @@ const DashboardPage = () => {
               </h2>
               <button
                 onClick={refreshBalances}
-                className="text-navy-400 hover:text-navy-300 text-sm font-semibold transition-colors"
+                className="text-gray-400 hover:text-gray-300 text-sm font-semibold transition-colors"
               >
                 🔄 Refresh
               </button>
             </div>
             {balances ? (
               <div className="space-y-4">
-                <div className="bg-dark-primary p-4 rounded-lg border border-dark-border hover:border-navy-500 transition-colors">
+                <div className="bg-dark-primary p-4 rounded-sm border border-dark-border hover:border-white transition-colors">
                   <div className="text-gray-400 text-sm mb-1">Ethereum (ETH)</div>
                   <div className="text-2xl font-bold text-white">
                     {parseFloat(balances.eth).toFixed(4)} ETH
@@ -81,7 +81,7 @@ const DashboardPage = () => {
                     For gas fees
                   </div>
                 </div>
-                <div className="bg-dark-primary p-4 rounded-lg border border-dark-border hover:border-navy-500 transition-colors">
+                <div className="bg-dark-primary p-4 rounded-sm border border-dark-border hover:border-white transition-colors">
                   <div className="text-gray-400 text-sm mb-1">Mock USDC</div>
                   <div className="text-2xl font-bold text-white">
                     {parseFloat(balances.usdc).toFixed(2)} mUSDC
@@ -98,7 +98,7 @@ const DashboardPage = () => {
         </div>
 
         {/* Get Test Tokens */}
-        <div className="bg-navy-600/20 border border-navy-600/40 rounded-xl shadow-xl p-6 mb-8">
+        <div className="bg-white/20 border border-navy-600/40 rounded-sm shadow-xl p-6 mb-8">
           <h2 className="text-xl font-semibold text-white mb-3 flex items-center">
             <span className="mr-2">🚰</span>
             Need Test Tokens?
@@ -111,7 +111,7 @@ const DashboardPage = () => {
               href="https://sepoliafaucet.com/"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-navy-600 hover:bg-navy-700 text-white px-6 py-3 rounded-lg transition-all shadow-lg hover:shadow-navy-600/30 font-semibold"
+              className="bg-white hover:bg-gray-200 text-white px-6 py-3 rounded-sm transition-all shadow-lg hover:shadow-gray-500/30 font-semibold"
             >
               Get Sepolia ETH →
             </a>
@@ -119,7 +119,7 @@ const DashboardPage = () => {
               href={`https://sepolia.etherscan.io/address/${user.walletAddress}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-dark-secondary hover:bg-dark-accent border border-dark-border text-white px-6 py-3 rounded-lg transition-all font-semibold"
+              className="bg-dark-secondary hover:bg-dark-accent border border-dark-border text-white px-6 py-3 rounded-sm transition-all font-semibold"
             >
               View on Etherscan →
             </a>
@@ -130,7 +130,7 @@ const DashboardPage = () => {
         <div className="grid md:grid-cols-3 gap-6">
           {user.role === 'author' ? (
             <>
-              <div className="bg-dark-secondary rounded-xl shadow-xl p-6 border border-dark-border hover:border-navy-500 transition-all cursor-pointer group">
+              <div className="bg-dark-secondary rounded-sm shadow-xl p-6 border border-dark-border hover:border-white transition-all cursor-pointer group">
                 <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">📝</div>
                 <h3 className="text-lg font-semibold text-white mb-2">
                   Create Plans
@@ -139,7 +139,7 @@ const DashboardPage = () => {
                   Set up subscription tiers for your supporters
                 </p>
               </div>
-              <div className="bg-dark-secondary rounded-xl shadow-xl p-6 border border-dark-border hover:border-navy-500 transition-all cursor-pointer group">
+              <div className="bg-dark-secondary rounded-sm shadow-xl p-6 border border-dark-border hover:border-white transition-all cursor-pointer group">
                 <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">👥</div>
                 <h3 className="text-lg font-semibold text-white mb-2">
                   My Subscribers
@@ -148,7 +148,7 @@ const DashboardPage = () => {
                   View and manage your subscriber list
                 </p>
               </div>
-              <div className="bg-dark-secondary rounded-xl shadow-xl p-6 border border-dark-border hover:border-navy-500 transition-all cursor-pointer group">
+              <div className="bg-dark-secondary rounded-sm shadow-xl p-6 border border-dark-border hover:border-white transition-all cursor-pointer group">
                 <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">📊</div>
                 <h3 className="text-lg font-semibold text-white mb-2">
                   Analytics
@@ -160,7 +160,7 @@ const DashboardPage = () => {
             </>
           ) : (
             <>
-              <div className="bg-dark-secondary rounded-xl shadow-xl p-6 border border-dark-border hover:border-navy-500 transition-all cursor-pointer group">
+              <div className="bg-dark-secondary rounded-sm shadow-xl p-6 border border-dark-border hover:border-white transition-all cursor-pointer group">
                 <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">🔍</div>
                 <h3 className="text-lg font-semibold text-white mb-2">
                   Discover Creators
@@ -169,7 +169,7 @@ const DashboardPage = () => {
                   Browse and find creators to support
                 </p>
               </div>
-              <div className="bg-dark-secondary rounded-xl shadow-xl p-6 border border-dark-border hover:border-navy-500 transition-all cursor-pointer group">
+              <div className="bg-dark-secondary rounded-sm shadow-xl p-6 border border-dark-border hover:border-white transition-all cursor-pointer group">
                 <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">⭐</div>
                 <h3 className="text-lg font-semibold text-white mb-2">
                   My Subscriptions
@@ -178,7 +178,7 @@ const DashboardPage = () => {
                   View creators you're supporting
                 </p>
               </div>
-              <div className="bg-dark-secondary rounded-xl shadow-xl p-6 border border-dark-border hover:border-navy-500 transition-all cursor-pointer group">
+              <div className="bg-dark-secondary rounded-sm shadow-xl p-6 border border-dark-border hover:border-white transition-all cursor-pointer group">
                 <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">💳</div>
                 <h3 className="text-lg font-semibold text-white mb-2">
                   Payment History

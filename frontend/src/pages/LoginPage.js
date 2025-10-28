@@ -36,9 +36,9 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-6">
+    <div className="min-h-screen flex items-center justify-center px-6 bg-black">
       <div className="max-w-md w-full">
-        <div className="bg-dark-secondary rounded-2xl shadow-2xl border border-dark-border p-10">
+        <div className="bg-dark-secondary rounded-sm shadow-2xl border border-dark-border p-10">
           <h2 className="text-3xl font-bold text-white mb-2 text-center">
             Welcome Back
           </h2>
@@ -47,7 +47,7 @@ const LoginPage = () => {
           </p>
 
           {error && (
-            <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-lg mb-6 text-sm">
+            <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-4 rounded-sm mb-6 text-sm">
               {error}
             </div>
           )}
@@ -62,7 +62,7 @@ const LoginPage = () => {
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-4 py-3 bg-dark-primary border border-dark-border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-navy-500 focus:ring-2 focus:ring-navy-500/20 transition-all"
+                className="w-full px-4 py-3 bg-black border border-dark-border rounded-sm text-white placeholder-gray-500 focus:outline-none focus:border-white transition-all"
                 placeholder="you@example.com"
               />
             </div>
@@ -76,7 +76,7 @@ const LoginPage = () => {
                 required
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="w-full px-4 py-3 bg-dark-primary border border-dark-border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-navy-500 focus:ring-2 focus:ring-navy-500/20 transition-all"
+                className="w-full px-4 py-3 bg-black border border-dark-border rounded-sm text-white placeholder-gray-500 focus:outline-none focus:border-white transition-all"
                 placeholder="••••••••"
               />
             </div>
@@ -84,7 +84,7 @@ const LoginPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-navy-600 hover:bg-navy-700 text-white py-3 rounded-lg font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-navy-600/30"
+              className="w-full bg-white hover:bg-gray-200 text-black py-3 rounded-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? 'Logging in...' : 'Login'}
             </button>
@@ -93,7 +93,7 @@ const LoginPage = () => {
           <div className="mt-6 text-center">
             <p className="text-gray-400 text-sm">
               Don't have an account?{' '}
-              <Link to="/register" className="text-navy-500 hover:text-navy-400 font-semibold transition-colors">
+              <Link to="/register" className="text-white hover:text-gray-300 font-semibold transition-colors underline">
                 Sign up
               </Link>
             </p>

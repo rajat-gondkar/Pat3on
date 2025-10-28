@@ -7,10 +7,10 @@ module.exports = {
     extend: {
       colors: {
         dark: {
-          primary: '#1a1d29',      // Main background
-          secondary: '#242837',    // Card backgrounds
-          accent: '#2e3348',       // Hover states
-          border: '#363b54',       // Borders
+          primary: '#000000',      // Pure black background
+          secondary: '#0a0a0a',    // Slightly lighter black
+          accent: '#1a1a1a',       // Hover states
+          border: '#2a2a2a',       // Subtle borders
         },
         navy: {
           50: '#e6eef8',
@@ -18,16 +18,16 @@ module.exports = {
           200: '#96bde3',
           300: '#6ba3d8',
           400: '#4c8fd0',
-          500: '#2e7cc7',
-          600: '#2971b8',
-          700: '#2262a4',
+          500: '#4a90e2',
+          600: '#3a7bc8',
+          700: '#2a5a9e',
           800: '#1c5490',
           900: '#0d3a6e',
         },
       },
       backgroundImage: {
-        'gradient-dark': 'linear-gradient(135deg, #1a1d29 0%, #242837 50%, #1a1d29 100%)',
-        'gradient-navy': 'linear-gradient(135deg, #2e7cc7 0%, #1c5490 100%)',
+        'gradient-dark': 'linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #000000 100%)',
+        'gradient-navy': 'linear-gradient(135deg, #4a90e2 0%, #2a5a9e 100%)',
       },
     },
   },
