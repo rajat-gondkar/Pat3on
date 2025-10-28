@@ -24,7 +24,11 @@ export const AuthProvider = ({ children }) => {
       setBalances(response.data.data.balances);
     } catch (error) {
       console.error('Failed to load user:', error);
-      logout();
+      // Clear invalid token
+      localStorage.removeItem('token');
+      setUser(null);
+      setBalances(null);
+      setToken(null);
     } finally {
       setLoading(false);
     }
@@ -55,9 +59,9 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem('token');
-    setToken(null);
     setUser(null);
     setBalances(null);
+    setToken(null);
   };
 
   const value = {

@@ -22,6 +22,12 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Role is required'],
     default: 'user'
   },
+  // Friendly display name / username shown across the app
+  displayName: {
+    type: String,
+    trim: true,
+    default: null,
+  },
   
   // External wallet (optional - user's own wallet)
   walletAddress: {

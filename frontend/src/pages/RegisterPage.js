@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
+    displayName: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -41,10 +42,16 @@ const RegisterPage = () => {
       return;
     }
 
+    if (!formData.displayName || formData.displayName.trim().length < 2) {
+      setError('Please provide a display name (at least 2 characters)');
+      return;
+    }
+
     setLoading(true);
 
     try {
       const response = await register({
+        displayName: formData.displayName,
         email: formData.email,
         password: formData.password,
         role: formData.role,
@@ -106,7 +113,7 @@ const RegisterPage = () => {
 
   if (showPrivateKey && walletData) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-6 py-12">
+      <div className="min-h-screen flex items-center justify-center px-6 py-12 bg-black">
         <div className="max-w-2xl w-full bg-dark-secondary rounded-sm shadow-2xl p-10 border border-dark-border">
           {/* Header */}
           <div className="text-center mb-8">
@@ -263,6 +270,22 @@ const RegisterPage = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Display Name */}
+          <div>
+            <label className="block text-sm font-medium text-gray-300 mb-2">
+              Display Name
+            </label>
+            <input
+              type="text"
+              name="displayName"
+              value={formData.displayName}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 bg-dark-primary border border-dark-border rounded-sm text-white placeholder-gray-500 focus:outline-none focus:border-white focus:ring-2 focus:ring-navy-500/20 transition-all"
+              placeholder="Your display name (e.g. Alex Doe)"
+            />
+          </div>
+
           {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">
@@ -379,11 +402,24 @@ const RegisterPage = () => {
 
         <p className="text-center text-gray-400 mt-6 text-sm">
           Already have an account?{' '}
-          <Link to="/login" className="text-white hover:text-gray-300 font-semibold transition-colors">
+          <Link to="/login" className="text-white hover:text-gray-300 font-semibold transition-colors underline">
             Login here
           </Link>
         </p>
       </div>
+
+      {/* Loading Overlay */}
+      {loading && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-dark-secondary border border-dark-border rounded-sm p-8 max-w-md text-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-white mx-auto mb-4"></div>
+            <h3 className="text-xl font-semibold text-white mb-2">Creating Your Account</h3>
+            <p className="text-gray-400 mb-2">Generating secure wallet...</p>
+            <p className="text-gray-400 text-sm">Funding with 0.001 ETH...</p>
+            <p className="text-gray-500 text-xs mt-4">Please wait, this may take a few moments</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

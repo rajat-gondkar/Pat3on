@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const AuthorProfile = require('../models/AuthorProfile');
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 const walletService = require('../services/walletService');
@@ -30,7 +31,7 @@ exports.register = async (req, res) => {
       });
     }
 
-    const { email, password, role } = req.body;
+  const { email, password, role, displayName } = req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -49,6 +50,11 @@ exports.register = async (req, res) => {
       });
     }
 
+    // Validate displayName
+    if (!displayName || typeof displayName !== 'string' || displayName.trim().length === 0) {
+      return res.status(400).json({ success: false, message: 'Display name is required' });
+    }
+
     // Generate custodial wallet BEFORE creating user
     console.log('🔐 Generating custodial wallet...');
     const walletData = await walletService.generateCustodialWallet();
@@ -59,6 +65,7 @@ exports.register = async (req, res) => {
       email,
       password, // Will be hashed by the User model pre-save hook
       role,
+      displayName: displayName.trim(),
       custodialWallet: {
         address: walletData.address,
         encryptedPrivateKey: walletData.encryptedPrivateKey,
@@ -83,6 +90,24 @@ exports.register = async (req, res) => {
       // Continue even if funding fails - user can still be created
     }
 
+    // Create author profile if user is an author
+    if (role === 'author') {
+      console.log('👤 Creating author profile...');
+      try {
+        const authorProfile = new AuthorProfile({
+          userId: user._id,
+          name: (displayName && displayName.trim()) ? displayName.trim() : email.split('@')[0],
+          bio: '',
+          socialLinks: {}
+        });
+        await authorProfile.save();
+        console.log(`✅ Author profile created: ${authorProfile._id}`);
+      } catch (profileError) {
+        console.error('⚠️  Author profile creation failed:', profileError.message);
+        // Continue even if profile creation fails - can be created later
+      }
+    }
+
     // Generate JWT token
     const token = generateToken(user._id, user.role);
 
@@ -94,6 +119,7 @@ exports.register = async (req, res) => {
         user: {
           id: user._id,
           email: user.email,
+          displayName: user.displayName,
           role: user.role,
           walletAddress: walletData.address,
           hasCustodialWallet: true
@@ -192,6 +218,7 @@ exports.login = async (req, res) => {
         user: {
           id: user._id,
           email: user.email,
+          displayName: user.displayName,
           role: user.role,
           walletAddress: user.custodialWallet?.address || user.walletAddress,
           isWalletLinked: user.isWalletLinked,
@@ -247,6 +274,7 @@ exports.getMe = async (req, res) => {
       data: {
         id: user._id,
         email: user.email,
+        displayName: user.displayName,
         role: user.role,
         walletAddress: user.custodialWallet?.address || user.walletAddress,
         isWalletLinked: user.isWalletLinked,

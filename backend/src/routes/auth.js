@@ -19,6 +19,10 @@ router.post(
     body('password')
       .isLength({ min: 6 })
       .withMessage('Password must be at least 6 characters long'),
+    body('displayName')
+      .isLength({ min: 2 })
+      .withMessage('Display name must be at least 2 characters long')
+      .trim(),
     body('role')
       .isIn(['user', 'author'])
       .withMessage('Role must be either "user" or "author"')

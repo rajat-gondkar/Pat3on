@@ -8,7 +8,7 @@ const Header = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate('/');
   };
 
   return (
@@ -40,7 +40,7 @@ const Header = () => {
                   Dashboard
                 </Link>
                 <button
-                  onClick={logout}
+                  onClick={handleLogout}
                   className="bg-transparent hover:bg-white/10 border border-white text-white px-5 py-2 font-medium transition-all"
                 >
                   Logout

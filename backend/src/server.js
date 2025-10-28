@@ -42,9 +42,9 @@ app.get('/health', (req, res) => {
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/wallet', require('./routes/wallet'));
 app.use('/api/custodial-wallet', require('./routes/custodialWallet'));
-// app.use('/api/creators', require('./routes/creators'));
-// app.use('/api/author', require('./routes/author'));
-// app.use('/api/subscriptions', require('./routes/subscriptions'));
+app.use('/api/author', require('./routes/author'));
+app.use('/api/plans', require('./routes/plan'));
+app.use('/api/subscriptions', require('./routes/subscription'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

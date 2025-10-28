@@ -6,6 +6,9 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
+import BrowseCreatorsPage from './pages/BrowseCreatorsPage';
+import CreatorProfilePage from './pages/CreatorProfilePage';
+import CreatePlanPage from './pages/CreatePlanPage';
 
 function App() {
   return (
@@ -18,6 +21,9 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/browse" element={<BrowseCreatorsPage />} />
+            <Route path="/creator/:userId" element={<CreatorProfilePage />} />
+            <Route path="/create-plan" element={<CreatePlanPage />} />
           </Routes>
         </div>
       </AuthProvider>
