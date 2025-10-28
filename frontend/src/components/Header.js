@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import NotificationBell from './NotificationBell';
 
 const Header = () => {
   const { balances, isAuthenticated, logout } = useAuth();
@@ -32,6 +33,9 @@ const Header = () => {
                     <span className="font-medium">mUSDC:</span> {parseFloat(balances.usdc).toFixed(2)}
                   </div>
                 )}
+                
+                {/* Notification Bell */}
+                <NotificationBell />
                 
                 <Link
                   to="/dashboard"

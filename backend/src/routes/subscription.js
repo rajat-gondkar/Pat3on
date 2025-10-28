@@ -272,4 +272,40 @@ router.get('/author/subscribers', auth, async (req, res) => {
   }
 });
 
+// @route   PATCH /api/subscriptions/:id/auto-renew
+// @desc    Toggle auto-renew for a subscription
+// @access  Private
+router.patch('/:id/auto-renew', auth, async (req, res) => {
+  try {
+    const { autoRenew } = req.body;
+    
+    if (typeof autoRenew !== 'boolean') {
+      return res.status(400).json({ message: 'autoRenew must be a boolean' });
+    }
+
+    const subscription = await Subscription.findById(req.params.id);
+
+    if (!subscription) {
+      return res.status(404).json({ message: 'Subscription not found' });
+    }
+
+    // Check ownership
+    if (subscription.subscriberId.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'Not authorized' });
+    }
+
+    subscription.autoRenew = autoRenew;
+    await subscription.save();
+
+    res.json({
+      success: true,
+      message: `Auto-renew ${autoRenew ? 'enabled' : 'disabled'}`,
+      subscription
+    });
+  } catch (error) {
+    console.error('Toggle auto-renew error:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
 module.exports = router;

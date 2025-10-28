@@ -38,6 +38,18 @@ const subscriptionSchema = new mongoose.Schema({
     type: String,
     default: null
   },
+  autoRenew: {
+    type: Boolean,
+    default: true // Automatically renew by default
+  },
+  lastRenewalAttempt: {
+    type: Date,
+    default: null
+  },
+  renewalFailureCount: {
+    type: Number,
+    default: 0
+  },
   createdAt: {
     type: Date,
     default: Date.now
@@ -51,6 +63,9 @@ subscriptionSchema.index({ subscriberId: 1, planId: 1, status: 1 });
 
 // Index for author to quickly find their subscribers
 subscriptionSchema.index({ authorId: 1, status: 1 });
+
+// Index for finding subscriptions that need renewal
+subscriptionSchema.index({ endDate: 1, status: 1, autoRenew: 1 });
 
 // Virtual to check if subscription is currently active
 subscriptionSchema.virtual('isCurrentlyActive').get(function() {

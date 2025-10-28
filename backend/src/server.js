@@ -45,6 +45,7 @@ app.use('/api/custodial-wallet', require('./routes/custodialWallet'));
 app.use('/api/author', require('./routes/author'));
 app.use('/api/plans', require('./routes/plan'));
 app.use('/api/subscriptions', require('./routes/subscription'));
+app.use('/api/notifications', require('./routes/notification'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -68,6 +69,10 @@ app.use((req, res) => {
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`🚀 Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
+  
+  // Start the subscription renewal scheduler
+  const { startRenewalScheduler } = require('./services/renewalScheduler');
+  startRenewalScheduler();
 });
 
 module.exports = app;
