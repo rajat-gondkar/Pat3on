@@ -2,6 +2,7 @@ const { ethers } = require('ethers');
 const Subscription = require('../models/Subscription');
 const Plan = require('../models/Plan');
 const User = require('../models/User');
+const AuthorProfile = require('../models/AuthorProfile');
 const Notification = require('../models/Notification');
 const crypto = require('crypto');
 
@@ -108,36 +109,27 @@ async function processSubscriptionRenewal(subscription) {
       await createNotification(
         subscriber._id,
         'subscription_renewal_failed',
-        '⚠️ Subscription Renewal Failed',
-        `Your subscription to ${plan.tierName} could not be renewed due to insufficient mUSDC balance. You need ${plan.pricePerMonth} mUSDC but only have ${ethers.formatUnits(balance, decimals)} mUSDC. Please add funds to continue your subscription.`,
+        '⚠️ Subscription Deleted - Insufficient Balance',
+        `Your subscription to ${plan.tierName} has been deleted because you don't have enough mUSDC balance for renewal. You need ${plan.pricePerMonth} mUSDC but only have ${ethers.formatUnits(balance, decimals)} mUSDC. Please resubscribe when you have sufficient funds.`,
         'high',
-        { subscriptionId: subscription._id, planId: plan._id }
+        { planId: plan._id }
       );
 
-      // Update subscription
-      subscription.lastRenewalAttempt = new Date();
-      subscription.renewalFailureCount += 1;
+      // Update plan and author stats before deletion
+      await Plan.findByIdAndUpdate(plan._id, { 
+        $inc: { subscriberCount: -1 } 
+      });
       
-      // If 3 failures, cancel subscription
-      if (subscription.renewalFailureCount >= 3) {
-        subscription.status = 'expired';
-        subscription.autoRenew = false;
-        await subscription.save();
-        
-        await createNotification(
-          subscriber._id,
-          'subscription_renewal_failed',
-          '❌ Subscription Expired',
-          `Your subscription to ${plan.tierName} has been cancelled after 3 failed renewal attempts due to insufficient balance. Please resubscribe manually when ready.`,
-          'high',
-          { subscriptionId: subscription._id, planId: plan._id }
-        );
-        
-        return { success: false, reason: 'insufficient_balance_cancelled' };
-      }
+      await AuthorProfile.findOneAndUpdate(
+        { userId: subscription.authorId },
+        { $inc: { totalSubscribers: -1 } }
+      );
+
+      // Delete subscription from database
+      await Subscription.findByIdAndDelete(subscription._id);
+      console.log(`🗑️  Subscription ${subscription._id} deleted due to insufficient balance`);
       
-      await subscription.save();
-      return { success: false, reason: 'insufficient_balance' };
+      return { success: false, reason: 'insufficient_balance_deleted' };
     }
 
     // Execute transfer
@@ -170,25 +162,35 @@ async function processSubscriptionRenewal(subscription) {
   } catch (error) {
     console.error(`❌ Error processing renewal for subscription ${subscription._id}:`, error);
     
-    // Create error notification
+    // Create error notification and delete subscription
     try {
       await createNotification(
         subscription.subscriberId,
         'subscription_renewal_failed',
-        '⚠️ Subscription Renewal Error',
-        `There was an error renewing your subscription. Please contact support or renew manually. Error: ${error.message}`,
+        '⚠️ Subscription Deleted - Renewal Error',
+        `Your subscription has been deleted due to an error during renewal. Please resubscribe manually. Error: ${error.message}`,
         'high',
-        { subscriptionId: subscription._id }
+        { planId: subscription.planId }
       );
       
-      subscription.lastRenewalAttempt = new Date();
-      subscription.renewalFailureCount += 1;
-      await subscription.save();
+      // Update stats before deletion
+      await Plan.findByIdAndUpdate(subscription.planId, { 
+        $inc: { subscriberCount: -1 } 
+      });
+      
+      await AuthorProfile.findOneAndUpdate(
+        { userId: subscription.authorId },
+        { $inc: { totalSubscribers: -1 } }
+      );
+      
+      // Delete subscription
+      await Subscription.findByIdAndDelete(subscription._id);
+      console.log(`🗑️  Subscription ${subscription._id} deleted due to error`);
     } catch (notifError) {
-      console.error('Error creating notification:', notifError);
+      console.error('Error creating notification or deleting subscription:', notifError);
     }
     
-    return { success: false, reason: 'error', error: error.message };
+    return { success: false, reason: 'error_deleted', error: error.message };
   }
 }
 
