@@ -66,11 +66,21 @@ const MySubscriptionsPage = () => {
     });
   };
 
-  const getDaysUntilRenewal = (endDate) => {
+  const getTimeUntilRenewal = (endDate) => {
     const now = new Date();
     const end = new Date(endDate);
-    const diff = Math.ceil((end - now) / (1000 * 60 * 60 * 24));
-    return diff;
+    const diffMs = end - now;
+    
+    if (diffMs <= 0) return 'Expires now';
+    
+    const seconds = Math.floor(diffMs / 1000);
+    const minutes = Math.floor(seconds / 60);
+    
+    if (minutes > 0) {
+      const remainingSeconds = seconds % 60;
+      return `${minutes}m ${remainingSeconds}s`;
+    }
+    return `${seconds}s`;
   };
 
   if (loading) {
@@ -119,8 +129,8 @@ const MySubscriptionsPage = () => {
         ) : (
           <div className="space-y-4">
             {subscriptions.map((subscription) => {
-              const daysLeft = getDaysUntilRenewal(subscription.endDate);
-              const isExpiringSoon = daysLeft <= 3;
+              const timeLeft = getTimeUntilRenewal(subscription.endDate);
+              const isExpiringSoon = new Date(subscription.endDate) - new Date() <= 60000; // Less than 1 minute
 
               return (
                 <div
@@ -194,7 +204,9 @@ const MySubscriptionsPage = () => {
                           </p>
                           {subscription.status === 'active' && (
                             <p className="text-xs text-gray-500 mt-1">
-                              {daysLeft > 0 ? `${daysLeft} days remaining` : 'Expires today'}
+                                                          <span className={`text-xs ${isExpiringSoon ? 'text-red-400' : 'text-gray-400'}`}>
+                              {timeLeft} remaining
+                            </span>
                             </p>
                           )}
                         </div>
@@ -202,10 +214,10 @@ const MySubscriptionsPage = () => {
 
                       {/* Price */}
                       <div className="bg-dark-primary border border-dark-border rounded-sm p-4 mb-4 inline-block">
-                        <p className="text-xs text-gray-500 mb-1">Monthly Price</p>
-                        <p className="text-2xl font-bold text-white">
-                          {subscription.planId?.pricePerMonth || 0} mUSDC
-                        </p>
+                      <p className="text-xs text-gray-500 mb-1">Price per 5 Minutes</p>
+                      <p className="text-lg font-bold text-white">
+                        {subscription.planId?.pricePerMonth || 0} mUSDC
+                      </p>
                       </div>
 
                       {/* Transaction Hash */}
@@ -272,7 +284,7 @@ const MySubscriptionsPage = () => {
                 Are you sure you want to cancel your subscription to:
               </p>
               <p className="text-white font-semibold mb-4">
-                {cancelModal.planId?.tierName} ({cancelModal.planId?.pricePerMonth} mUSDC/month)
+                {cancelModal.planId?.tierName} ({cancelModal.planId?.pricePerMonth} mUSDC/5min)
               </p>
               <p className="text-gray-400 text-sm mb-6">
                 Your subscription will end on {formatDate(cancelModal.endDate)} and won't be renewed.

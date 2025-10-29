@@ -113,7 +113,7 @@ const MySubscribersPage = () => {
           <div className="bg-dark-secondary rounded-sm border border-dark-border p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-400 text-sm mb-1">Monthly Revenue</p>
+                <p className="text-gray-400 text-sm mb-1">Revenue per 5 Minutes</p>
                 <p className="text-3xl font-bold text-white">${stats.monthlyRevenue.toFixed(2)}</p>
               </div>
               <div className="text-4xl">💰</div>

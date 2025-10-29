@@ -147,11 +147,11 @@ const AnalyticsPage = () => {
 
           <div className="bg-dark-secondary rounded-sm border border-dark-border p-6">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-gray-400 text-sm">Monthly Revenue</p>
+              <p className="text-gray-400 text-sm">Revenue per 5 Minutes</p>
               <span className="text-3xl">💰</span>
             </div>
             <p className="text-4xl font-bold text-white">${analytics.monthlyRevenue.toFixed(2)}</p>
-            <p className="text-xs text-gray-500 mt-2">Recurring monthly income</p>
+            <p className="text-xs text-gray-500 mt-2">Recurring income every 5 minutes</p>
           </div>
 
           <div className="bg-dark-secondary rounded-sm border border-dark-border p-6">
@@ -215,7 +215,7 @@ const AnalyticsPage = () => {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-semibold text-white">${sub.plan?.pricePerMonth?.toFixed(2) || '0.00'}/mo</p>
+                    <p className="font-semibold text-white">${sub.plan?.pricePerMonth?.toFixed(2) || '0.00'}/5min</p>
                     <p className="text-sm text-gray-400">{formatDate(sub.startDate)}</p>
                   </div>
                 </div>

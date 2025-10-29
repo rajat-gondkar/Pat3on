@@ -31,8 +31,6 @@ const Header = () => {
                 {/* Balance Display - Top Right */}
                 {balances && (
                   <div className="bg-dark-accent px-4 py-2 rounded-full text-xs text-gray-300 border border-dark-border">
-                    <span className="font-medium">ETH:</span> {parseFloat(balances.eth).toFixed(4)}
-                    <span className="mx-2">|</span>
                     <span className="font-medium">mUSDC:</span> {parseFloat(balances.usdc).toFixed(2)}
                   </div>
                 )}

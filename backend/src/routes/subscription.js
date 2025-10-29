@@ -127,10 +127,9 @@ router.post('/subscribe', auth, async (req, res) => {
     const receipt = await tx.wait();
     console.log('Transfer successful:', receipt.hash);
 
-    // Calculate subscription period (1 month from now)
+    // Calculate subscription period (5 minutes from now)
     const startDate = new Date();
-    const endDate = new Date();
-    endDate.setMonth(endDate.getMonth() + 1);
+    const endDate = new Date(startDate.getTime() + 5 * 60 * 1000); // Add 5 minutes
 
     // Create subscription record
     const subscription = new Subscription({

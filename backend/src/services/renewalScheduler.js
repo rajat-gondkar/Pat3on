@@ -140,7 +140,7 @@ async function processSubscriptionRenewal(subscription) {
 
     // Update subscription
     subscription.startDate = subscription.endDate;
-    subscription.endDate = new Date(subscription.endDate.getTime() + 30 * 24 * 60 * 60 * 1000); // Add 30 days
+    subscription.endDate = new Date(subscription.endDate.getTime() + 5 * 60 * 1000); // Add 5 minutes
     subscription.transactionHash = receipt.hash;
     subscription.lastRenewalAttempt = new Date();
     subscription.renewalFailureCount = 0; // Reset failure count on success

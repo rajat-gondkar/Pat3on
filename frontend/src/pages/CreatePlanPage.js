@@ -143,19 +143,19 @@ const CreatePlanPage = () => {
 
             {/* Price */}
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Price per Month (mUSDC) *
+                            <label className="block text-gray-400 text-sm mb-2">
+                Price per 5 Minutes (mUSDC) *
               </label>
               <input
                 type="number"
                 name="pricePerMonth"
                 value={formData.pricePerMonth}
                 onChange={handleChange}
-                required
-                min="0"
-                step="0.01"
+                className="w-full bg-dark-primary text-white border border-dark-border rounded-sm px-4 py-3 focus:outline-none focus:border-white transition-colors"
                 placeholder="10.00"
-                className="w-full px-4 py-3 bg-black border border-dark-border rounded-sm text-white placeholder-gray-500 focus:outline-none focus:border-white transition-all"
+                step="0.01"
+                min="0"
+                required
               />
             </div>
 
@@ -243,7 +243,11 @@ const CreatePlanPage = () => {
                       </Link>
                       <p className="text-xs text-gray-500 mb-2">Click to view posts</p>
                       <p className="text-2xl font-bold text-white mt-2">
-                        {plan.pricePerMonth} <span className="text-sm text-gray-400">mUSDC/month</span>
+                                              <div className="mb-2">
+                        <span className="text-2xl font-bold text-white">
+                          {plan.pricePerMonth} <span className="text-sm text-gray-400">mUSDC/5min</span>
+                        </span>
+                      </div>
                       </p>
                     </div>
                     <div className="flex items-center gap-4">

@@ -157,7 +157,7 @@ const WritePostPage = () => {
                 <option value="">Select a plan...</option>
                 {plans.map((plan) => (
                   <option key={plan._id} value={plan._id}>
-                    {plan.tierName} (${plan.pricePerMonth}/month)
+                    {plan.tierName} (${plan.pricePerMonth}/5min)
                   </option>
                 ))}
               </select>

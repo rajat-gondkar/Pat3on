@@ -189,7 +189,9 @@ const CreatorProfilePage = () => {
                 >
                   <h3 className="text-xl font-semibold text-white mb-2">{plan.tierName}</h3>
                   <p className="text-3xl font-bold text-white mb-4">
-                    {plan.pricePerMonth} <span className="text-lg text-gray-400">mUSDC/month</span>
+                                      <p className="text-lg text-white">
+                    {plan.pricePerMonth} <span className="text-lg text-gray-400">mUSDC/5min</span>
+                  </p>
                   </p>
                   
                   {plan.description && (

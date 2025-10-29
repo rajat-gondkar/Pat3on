@@ -91,7 +91,7 @@ const PlanPostsPage = () => {
                     by {plan.authorId?.displayName || 'Unknown Author'}
                   </p>
                   <p className="text-lg text-white">
-                    ${plan.pricePerMonth} <span className="text-sm text-gray-400">/ month</span>
+                    ${plan.pricePerMonth} <span className="text-sm text-gray-400">/ 5min</span>
                   </p>
                 </div>
                 {user && plan.authorId && user._id === plan.authorId._id ? (
