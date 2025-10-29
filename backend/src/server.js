@@ -46,6 +46,7 @@ app.use('/api/author', require('./routes/author'));
 app.use('/api/plans', require('./routes/plan'));
 app.use('/api/subscriptions', require('./routes/subscription'));
 app.use('/api/notifications', require('./routes/notification'));
+app.use('/api/posts', require('./routes/post'));
 
 // Error handling middleware
 app.use((err, req, res, next) => {

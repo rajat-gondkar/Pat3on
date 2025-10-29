@@ -17,7 +17,10 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex justify-between items-center">
           {/* Logo */}
-          <Link to="/" className="text-2xl font-bold text-white hover:text-gray-300 transition-colors">
+          <Link 
+            to={isAuthenticated ? "/dashboard" : "/"} 
+            className="text-2xl font-bold text-white hover:text-gray-300 transition-colors"
+          >
             Pat3on
           </Link>
 

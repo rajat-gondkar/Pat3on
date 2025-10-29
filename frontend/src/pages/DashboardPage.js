@@ -165,16 +165,16 @@ const DashboardPage = () => {
                   Set up subscription tiers for your supporters
                 </p>
               </Link>
-              <Link to="/my-subscribers" className="bg-dark-secondary rounded-sm shadow-xl p-6 border border-dark-border hover:border-white transition-all cursor-pointer group">
-                <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">👥</div>
+              <Link to="/write-post" className="bg-dark-secondary rounded-sm shadow-xl p-6 border border-dark-border hover:border-white transition-all cursor-pointer group">
+                <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">✍️</div>
                 <h3 className="text-lg font-semibold text-white mb-2">
-                  My Subscribers
+                  Write a Post
                 </h3>
                 <p className="text-gray-400 text-sm">
-                  View and manage your subscriber list
+                  Share content with your subscribers
                 </p>
               </Link>
-              <div className="bg-dark-secondary rounded-sm shadow-xl p-6 border border-dark-border hover:border-white transition-all cursor-pointer group">
+              <Link to="/analytics" className="bg-dark-secondary rounded-sm shadow-xl p-6 border border-dark-border hover:border-white transition-all cursor-pointer group">
                 <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">📊</div>
                 <h3 className="text-lg font-semibold text-white mb-2">
                   Analytics
@@ -182,7 +182,7 @@ const DashboardPage = () => {
                 <p className="text-gray-400 text-sm">
                   Track your earnings and growth
                 </p>
-              </div>
+              </Link>
             </>
           ) : (
             <>

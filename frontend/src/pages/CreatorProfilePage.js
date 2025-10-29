@@ -10,6 +10,7 @@ const CreatorProfilePage = () => {
   
   const [profile, setProfile] = useState(null);
   const [plans, setPlans] = useState([]);
+  const [userSubscriptions, setUserSubscriptions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [subscribing, setSubscribing] = useState(null);
   const [error, setError] = useState('');
@@ -29,12 +30,28 @@ const CreatorProfilePage = () => {
       
       setProfile(profileRes.data.profile);
       setPlans(plansRes.data.plans);
+
+      // Fetch user's active subscriptions if authenticated
+      if (isAuthenticated) {
+        try {
+          const subsRes = await api.get('/subscriptions/my-subscriptions');
+          setUserSubscriptions(subsRes.data.subscriptions || []);
+        } catch (err) {
+          console.error('Failed to fetch subscriptions:', err);
+        }
+      }
     } catch (err) {
       setError('Failed to load creator profile');
       console.error(err);
     } finally {
       setLoading(false);
     }
+  };
+
+  const isSubscribedToPlan = (planId) => {
+    return userSubscriptions.some(
+      sub => sub.plan?._id === planId && sub.status === 'active'
+    );
   };
 
   const handleSubscribe = async (planId) => {
@@ -191,18 +208,31 @@ const CreatorProfilePage = () => {
                     </ul>
                   )}
 
-                  <button
-                    onClick={() => handleSubscribe(plan._id)}
-                    disabled={subscribing === plan._id || !isAuthenticated}
-                    className="w-full bg-white hover:bg-gray-200 text-black py-3 rounded-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {subscribing === plan._id ? 'Processing...' : 'Subscribe Now'}
-                  </button>
-                  
-                  {!isAuthenticated && (
-                    <p className="text-gray-400 text-xs text-center mt-2">
-                      Please login to subscribe
-                    </p>
+                  {isSubscribedToPlan(plan._id) ? (
+                    <>
+                      <div className="w-full bg-green-900/30 border border-green-500 text-green-200 py-3 rounded-sm font-semibold text-center mb-2">
+                        ✓ Already Subscribed
+                      </div>
+                      <p className="text-gray-400 text-xs text-center">
+                        You are currently subscribed to this plan
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => handleSubscribe(plan._id)}
+                        disabled={subscribing === plan._id || !isAuthenticated}
+                        className="w-full bg-white hover:bg-gray-200 text-black py-3 rounded-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {subscribing === plan._id ? 'Processing...' : 'Subscribe Now'}
+                      </button>
+                      
+                      {!isAuthenticated && (
+                        <p className="text-gray-400 text-xs text-center mt-2">
+                          Please login to subscribe
+                        </p>
+                      )}
+                    </>
                   )}
                 </div>
               ))}

@@ -13,6 +13,8 @@ import MySubscriptionsPage from './pages/MySubscriptionsPage';
 import MySubscribersPage from './pages/MySubscribersPage';
 import ProfileSettingsPage from './pages/ProfileSettingsPage';
 import PaymentHistoryPage from './pages/PaymentHistoryPage';
+import WritePostPage from './pages/WritePostPage';
+import AnalyticsPage from './pages/AnalyticsPage';
 
 function App() {
   return (
@@ -32,6 +34,8 @@ function App() {
             <Route path="/my-subscribers" element={<MySubscribersPage />} />
             <Route path="/profile-settings" element={<ProfileSettingsPage />} />
             <Route path="/payment-history" element={<PaymentHistoryPage />} />
+            <Route path="/write-post" element={<WritePostPage />} />
+            <Route path="/analytics" element={<AnalyticsPage />} />
           </Routes>
         </div>
       </AuthProvider>

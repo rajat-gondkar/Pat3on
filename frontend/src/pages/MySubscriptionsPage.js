@@ -19,7 +19,11 @@ const MySubscriptionsPage = () => {
     try {
       setLoading(true);
       const response = await api.get('/subscriptions/my-subscriptions');
-      setSubscriptions(response.data.subscriptions);
+      // Filter to only show active subscriptions
+      const activeSubscriptions = response.data.subscriptions.filter(
+        sub => sub.status === 'active'
+      );
+      setSubscriptions(activeSubscriptions);
     } catch (err) {
       setError('Failed to load subscriptions');
       console.error(err);
