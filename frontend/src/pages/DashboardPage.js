@@ -87,7 +87,7 @@ const DashboardPage = () => {
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold text-white flex items-center">
                 <span className="mr-2">💰</span>
-                Balances
+                Balance
               </h2>
               <button
                 onClick={refreshBalances}
@@ -97,58 +97,18 @@ const DashboardPage = () => {
               </button>
             </div>
             {balances ? (
-              <div className="space-y-4">
-                <div className="bg-dark-primary p-4 rounded-sm border border-dark-border hover:border-white transition-colors">
-                  <div className="text-gray-400 text-sm mb-1">Ethereum (ETH)</div>
-                  <div className="text-2xl font-bold text-white">
-                    {parseFloat(balances.eth).toFixed(4)} ETH
-                  </div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    For gas fees
-                  </div>
+              <div className="bg-dark-primary p-4 rounded-sm border border-dark-border hover:border-white transition-colors">
+                <div className="text-gray-400 text-sm mb-1">Mock USDC</div>
+                <div className="text-2xl font-bold text-white">
+                  {parseFloat(balances.usdc).toFixed(2)} mUSDC
                 </div>
-                <div className="bg-dark-primary p-4 rounded-sm border border-dark-border hover:border-white transition-colors">
-                  <div className="text-gray-400 text-sm mb-1">Mock USDC</div>
-                  <div className="text-2xl font-bold text-white">
-                    {parseFloat(balances.usdc).toFixed(2)} mUSDC
-                  </div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    For subscriptions
-                  </div>
+                <div className="text-xs text-gray-500 mt-1">
+                  For subscriptions
                 </div>
               </div>
             ) : (
-              <div className="text-gray-400">Loading balances...</div>
+              <div className="text-gray-400">Loading balance...</div>
             )}
-          </div>
-        </div>
-
-        {/* Get Test Tokens */}
-        <div className="bg-white/20 border border-navy-600/40 rounded-sm shadow-xl p-6 mb-8">
-          <h2 className="text-xl font-semibold text-white mb-3 flex items-center">
-            <span className="mr-2">🚰</span>
-            Need Test Tokens?
-          </h2>
-          <p className="text-gray-300 mb-5">
-            Get free Sepolia ETH and Mock USDC to test the platform
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <a
-              href="https://sepoliafaucet.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-white hover:bg-gray-200 text-white px-6 py-3 rounded-sm transition-all shadow-lg hover:shadow-gray-500/30 font-semibold"
-            >
-              Get Sepolia ETH →
-            </a>
-            <a
-              href={`https://sepolia.etherscan.io/address/${user.walletAddress}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-dark-secondary hover:bg-dark-accent border border-dark-border text-white px-6 py-3 rounded-sm transition-all font-semibold"
-            >
-              View on Etherscan →
-            </a>
           </div>
         </div>
 
@@ -215,6 +175,35 @@ const DashboardPage = () => {
               </Link>
             </>
           )}
+        </div>
+
+        {/* Get Test Tokens */}
+        <div className="bg-dark-secondary border border-dark-border rounded-sm shadow-xl p-6 mt-8">
+          <h2 className="text-xl font-semibold text-white mb-3 flex items-center">
+            <span className="mr-2">🚰</span>
+            Need Test Tokens?
+          </h2>
+          <p className="text-gray-400 mb-5">
+            Get free Sepolia ETH and Mock USDC to test the platform
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <a
+              href="https://sepoliafaucet.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-dark-primary hover:bg-dark-accent border border-dark-border hover:border-white text-white px-6 py-3 rounded-sm transition-all font-semibold"
+            >
+              Get Sepolia ETH →
+            </a>
+            <a
+              href={`https://sepolia.etherscan.io/address/${user.walletAddress}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-dark-primary hover:bg-dark-accent border border-dark-border hover:border-white text-white px-6 py-3 rounded-sm transition-all font-semibold"
+            >
+              View on Etherscan →
+            </a>
+          </div>
         </div>
       </div>
     </div>
