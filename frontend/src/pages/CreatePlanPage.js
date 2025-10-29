@@ -231,11 +231,17 @@ const CreatePlanPage = () => {
               {myPlans.map((plan) => (
                 <div
                   key={plan._id}
-                  className="bg-dark-secondary border border-dark-border rounded-sm p-6"
+                  className="bg-dark-secondary border border-dark-border rounded-sm p-6 hover:border-white transition-all"
                 >
                   <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <h3 className="text-xl font-semibold text-white">{plan.tierName}</h3>
+                    <div className="flex-1">
+                      <Link 
+                        to={`/plan/${plan._id}/posts`}
+                        className="text-xl font-semibold text-white hover:text-gray-300 transition-colors inline-block"
+                      >
+                        {plan.tierName} →
+                      </Link>
+                      <p className="text-xs text-gray-500 mb-2">Click to view posts</p>
                       <p className="text-2xl font-bold text-white mt-2">
                         {plan.pricePerMonth} <span className="text-sm text-gray-400">mUSDC/month</span>
                       </p>

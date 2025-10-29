@@ -94,9 +94,15 @@ const PlanPostsPage = () => {
                     ${plan.pricePerMonth} <span className="text-sm text-gray-400">/ month</span>
                   </p>
                 </div>
-                <div className="bg-green-900/30 border border-green-500 text-green-200 px-4 py-2 rounded-sm text-sm font-semibold">
-                  ✓ Subscribed
-                </div>
+                {user && plan.authorId && user._id === plan.authorId._id ? (
+                  <div className="bg-blue-900/30 border border-blue-500 text-blue-200 px-4 py-2 rounded-sm text-sm font-semibold">
+                    👤 Your Plan
+                  </div>
+                ) : (
+                  <div className="bg-green-900/30 border border-green-500 text-green-200 px-4 py-2 rounded-sm text-sm font-semibold">
+                    ✓ Subscribed
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -143,14 +149,6 @@ const PlanPostsPage = () => {
                 <h2 className="text-2xl font-bold text-white mb-3">{post.title}</h2>
                 <div className="text-gray-300 whitespace-pre-wrap leading-relaxed">
                   {post.content}
-                </div>
-
-                {/* Post Footer */}
-                <div className="mt-6 pt-4 border-t border-dark-border flex items-center gap-6 text-sm text-gray-400">
-                  <button className="hover:text-white transition-colors flex items-center gap-2">
-                    <span>👍</span>
-                    <span>{post.likes || 0} likes</span>
-                  </button>
                 </div>
               </article>
             ))}
