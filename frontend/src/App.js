@@ -9,6 +9,10 @@ import DashboardPage from './pages/DashboardPage';
 import BrowseCreatorsPage from './pages/BrowseCreatorsPage';
 import CreatorProfilePage from './pages/CreatorProfilePage';
 import CreatePlanPage from './pages/CreatePlanPage';
+import MySubscriptionsPage from './pages/MySubscriptionsPage';
+import MySubscribersPage from './pages/MySubscribersPage';
+import ProfileSettingsPage from './pages/ProfileSettingsPage';
+import PaymentHistoryPage from './pages/PaymentHistoryPage';
 
 function App() {
   return (
@@ -24,6 +28,10 @@ function App() {
             <Route path="/browse" element={<BrowseCreatorsPage />} />
             <Route path="/creator/:userId" element={<CreatorProfilePage />} />
             <Route path="/create-plan" element={<CreatePlanPage />} />
+            <Route path="/my-subscriptions" element={<MySubscriptionsPage />} />
+            <Route path="/my-subscribers" element={<MySubscribersPage />} />
+            <Route path="/profile-settings" element={<ProfileSettingsPage />} />
+            <Route path="/payment-history" element={<PaymentHistoryPage />} />
           </Routes>
         </div>
       </AuthProvider>

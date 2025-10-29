@@ -308,4 +308,101 @@ router.patch('/:id/auto-renew', auth, async (req, res) => {
   }
 });
 
+// @route   GET /api/subscriptions/payment-history
+// @desc    Get user's payment transaction history
+// @access  Private
+router.get('/payment-history', auth, async (req, res) => {
+  try {
+    // Get all subscriptions for the user (both as subscriber and author)
+    const asSubscriber = await Subscription.find({ 
+      subscriberId: req.user._id 
+    })
+      .populate('planId')
+      .populate('authorId', 'displayName email')
+      .sort({ createdAt: -1 });
+
+    const asAuthor = await Subscription.find({ 
+      authorId: req.user._id 
+    })
+      .populate('planId')
+      .populate('subscriberId', 'displayName email')
+      .sort({ createdAt: -1 });
+
+    // Format transactions
+    const transactions = [];
+
+    // Add subscriber transactions
+    asSubscriber.forEach(sub => {
+      if (sub.transactionHash) {
+        console.log('Subscriber transaction - Plan data:', {
+          planId: sub.planId?._id,
+          pricePerMonth: sub.planId?.pricePerMonth,
+          tierName: sub.planId?.tierName
+        });
+        transactions.push({
+          id: sub._id,
+          type: 'subscription_payment',
+          direction: 'outgoing',
+          amount: sub.planId?.pricePerMonth || 0,
+          currency: 'mUSDC',
+          date: sub.createdAt,
+          transactionHash: sub.transactionHash,
+          description: `Subscribed to ${sub.authorId?.displayName || 'Unknown Author'}`,
+          plan: sub.planId?.tierName,
+          status: sub.status
+        });
+      }
+    });
+
+    // Add author transactions (income)
+    asAuthor.forEach(sub => {
+      if (sub.transactionHash) {
+        console.log('Author transaction - Plan data:', {
+          planId: sub.planId?._id,
+          pricePerMonth: sub.planId?.pricePerMonth,
+          tierName: sub.planId?.tierName
+        });
+        transactions.push({
+          id: sub._id,
+          type: 'subscription_received',
+          direction: 'incoming',
+          amount: sub.planId?.pricePerMonth || 0,
+          currency: 'mUSDC',
+          date: sub.createdAt,
+          transactionHash: sub.transactionHash,
+          description: `Received from ${sub.subscriberId?.displayName || 'Anonymous User'}`,
+          plan: sub.planId?.tierName,
+          status: sub.status
+        });
+      }
+    });
+
+    // Sort all transactions by date
+    transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    // Calculate totals
+    const totalSpent = transactions
+      .filter(t => t.direction === 'outgoing')
+      .reduce((sum, t) => sum + t.amount, 0);
+
+    const totalEarned = transactions
+      .filter(t => t.direction === 'incoming')
+      .reduce((sum, t) => sum + t.amount, 0);
+
+    res.json({
+      success: true,
+      transactions,
+      summary: {
+        totalSpent,
+        totalEarned,
+        netBalance: totalEarned - totalSpent,
+        transactionCount: transactions.length
+      }
+    });
+  } catch (error) {
+    console.error('Get payment history error:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
+
 module.exports = router;

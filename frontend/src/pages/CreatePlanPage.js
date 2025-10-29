@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 
@@ -109,6 +109,9 @@ const CreatePlanPage = () => {
   return (
     <div className="min-h-screen bg-black py-12 px-6">
       <div className="max-w-4xl mx-auto">
+        <Link to="/dashboard" className="text-gray-400 hover:text-white mb-4 inline-block">
+          ← Back to Dashboard
+        </Link>
         <h1 className="text-4xl font-bold text-white mb-8">Manage Subscription Plans</h1>
 
         {/* Create New Plan Form */}

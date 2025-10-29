@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 
@@ -88,6 +88,9 @@ const CreatorProfilePage = () => {
   return (
     <div className="min-h-screen bg-black py-12 px-6">
       <div className="max-w-4xl mx-auto">
+        <Link to="/browse" className="text-gray-400 hover:text-white mb-4 inline-block">
+          ← Back to Browse
+        </Link>
         {/* Profile Header */}
         <div className="bg-dark-secondary border border-dark-border rounded-sm p-8 mb-8">
           <div className="flex items-start gap-6 mb-6">

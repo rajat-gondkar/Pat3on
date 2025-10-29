@@ -32,12 +32,24 @@ const DashboardPage = () => {
       <div className="max-w-6xl mx-auto">
         {/* Welcome Section */}
         <div className="bg-dark-secondary rounded-sm shadow-2xl p-8 mb-8 border border-dark-border">
-          <h1 className="text-3xl font-bold text-white mb-2">
-            Welcome back, {user.displayName || user.email}!
-          </h1>
-          <p className="text-gray-400 text-lg">
-            {user.role === 'author' ? 'Creator Dashboard' : 'Subscriber Dashboard'}
-          </p>
+          <div className="flex justify-between items-start">
+            <div>
+              <h1 className="text-3xl font-bold text-white mb-2">
+                Welcome back, {user.displayName || user.email}!
+              </h1>
+              <p className="text-gray-400 text-lg">
+                {user.role === 'author' ? 'Creator Dashboard' : 'Subscriber Dashboard'}
+              </p>
+            </div>
+            {user.role === 'author' && (
+              <Link
+                to="/profile-settings"
+                className="bg-dark-primary hover:bg-dark-accent border border-dark-border hover:border-white text-white px-4 py-2 rounded-sm transition-all font-semibold text-sm"
+              >
+                ✏️ Edit Profile
+              </Link>
+            )}
+          </div>
         </div>
 
         {/* Wallet Info */}
@@ -153,7 +165,7 @@ const DashboardPage = () => {
                   Set up subscription tiers for your supporters
                 </p>
               </Link>
-              <div className="bg-dark-secondary rounded-sm shadow-xl p-6 border border-dark-border hover:border-white transition-all cursor-pointer group">
+              <Link to="/my-subscribers" className="bg-dark-secondary rounded-sm shadow-xl p-6 border border-dark-border hover:border-white transition-all cursor-pointer group">
                 <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">👥</div>
                 <h3 className="text-lg font-semibold text-white mb-2">
                   My Subscribers
@@ -161,7 +173,7 @@ const DashboardPage = () => {
                 <p className="text-gray-400 text-sm">
                   View and manage your subscriber list
                 </p>
-              </div>
+              </Link>
               <div className="bg-dark-secondary rounded-sm shadow-xl p-6 border border-dark-border hover:border-white transition-all cursor-pointer group">
                 <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">📊</div>
                 <h3 className="text-lg font-semibold text-white mb-2">
@@ -183,7 +195,7 @@ const DashboardPage = () => {
                   Browse and find creators to support
                 </p>
               </Link>
-              <div className="bg-dark-secondary rounded-sm shadow-xl p-6 border border-dark-border hover:border-white transition-all cursor-pointer group">
+              <Link to="/my-subscriptions" className="bg-dark-secondary rounded-sm shadow-xl p-6 border border-dark-border hover:border-white transition-all cursor-pointer group">
                 <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">⭐</div>
                 <h3 className="text-lg font-semibold text-white mb-2">
                   My Subscriptions
@@ -191,8 +203,8 @@ const DashboardPage = () => {
                 <p className="text-gray-400 text-sm">
                   View creators you're supporting
                 </p>
-              </div>
-              <div className="bg-dark-secondary rounded-sm shadow-xl p-6 border border-dark-border hover:border-white transition-all cursor-pointer group">
+              </Link>
+              <Link to="/payment-history" className="bg-dark-secondary rounded-sm shadow-xl p-6 border border-dark-border hover:border-white transition-all cursor-pointer group">
                 <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">💳</div>
                 <h3 className="text-lg font-semibold text-white mb-2">
                   Payment History
@@ -200,7 +212,7 @@ const DashboardPage = () => {
                 <p className="text-gray-400 text-sm">
                   Track your subscription payments
                 </p>
-              </div>
+              </Link>
             </>
           )}
         </div>

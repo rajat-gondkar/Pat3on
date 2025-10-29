@@ -38,6 +38,9 @@ const BrowseCreatorsPage = () => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-12">
+          <Link to="/dashboard" className="text-gray-400 hover:text-white mb-4 inline-block">
+            ← Back to Dashboard
+          </Link>
           <h1 className="text-4xl font-bold text-white mb-4">Discover Creators</h1>
           <p className="text-gray-400 text-lg mb-8">
             Find and support your favorite creators on Pat3on
