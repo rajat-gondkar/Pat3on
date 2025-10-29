@@ -131,9 +131,12 @@ const MySubscriptionsPage = () => {
                     {/* Subscription Info */}
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-3">
-                        <h3 className="text-2xl font-bold text-white">
-                          {subscription.planId?.tierName || 'Plan'}
-                        </h3>
+                        <Link
+                          to={`/plan/${subscription.planId?._id}/posts`}
+                          className="text-2xl font-bold text-white hover:text-gray-300 transition-colors"
+                        >
+                          {subscription.planId?.tierName || 'Plan'} →
+                        </Link>
                         <span
                           className={`px-3 py-1 rounded-full text-xs font-semibold ${
                             subscription.status === 'active'
@@ -144,6 +147,7 @@ const MySubscriptionsPage = () => {
                           {subscription.status.toUpperCase()}
                         </span>
                       </div>
+                      <p className="text-xs text-gray-500 mb-3">Click plan name to view exclusive posts</p>
 
                       <Link
                         to={`/creator/${subscription.authorId}`}

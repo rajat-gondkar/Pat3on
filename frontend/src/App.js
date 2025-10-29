@@ -15,6 +15,7 @@ import ProfileSettingsPage from './pages/ProfileSettingsPage';
 import PaymentHistoryPage from './pages/PaymentHistoryPage';
 import WritePostPage from './pages/WritePostPage';
 import AnalyticsPage from './pages/AnalyticsPage';
+import PlanPostsPage from './pages/PlanPostsPage';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
             <Route path="/payment-history" element={<PaymentHistoryPage />} />
             <Route path="/write-post" element={<WritePostPage />} />
             <Route path="/analytics" element={<AnalyticsPage />} />
+            <Route path="/plan/:planId/posts" element={<PlanPostsPage />} />
           </Routes>
         </div>
       </AuthProvider>

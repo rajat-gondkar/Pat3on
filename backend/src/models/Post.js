@@ -6,6 +6,11 @@ const postSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
+  planId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Plan',
+    required: true
+  },
   title: {
     type: String,
     required: true,
@@ -16,11 +21,6 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true,
     maxlength: 10000
-  },
-  tierAccess: {
-    type: String,
-    enum: ['all', 'premium'],
-    default: 'all'
   },
   likes: {
     type: Number,
@@ -36,5 +36,6 @@ const postSchema = new mongoose.Schema({
 
 // Index for faster lookups
 postSchema.index({ authorId: 1, createdAt: -1 });
+postSchema.index({ planId: 1, createdAt: -1 });
 
 module.exports = mongoose.model('Post', postSchema);

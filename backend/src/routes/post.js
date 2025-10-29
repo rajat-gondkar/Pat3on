@@ -8,7 +8,7 @@ const auth = require('../middleware/auth');
 // @access  Private (Authors)
 router.post('/create', auth, async (req, res) => {
   try {
-    const { title, content, tierAccess } = req.body;
+    const { title, content, planId } = req.body;
 
     // Check if user is an author
     if (req.user.role !== 'author') {
@@ -20,11 +20,15 @@ router.post('/create', auth, async (req, res) => {
       return res.status(400).json({ message: 'Title and content are required' });
     }
 
+    if (!planId) {
+      return res.status(400).json({ message: 'Plan is required' });
+    }
+
     const post = new Post({
       authorId: req.user._id,
+      planId,
       title,
-      content,
-      tierAccess: tierAccess || 'all'
+      content
     });
 
     await post.save();
@@ -40,24 +44,46 @@ router.post('/create', auth, async (req, res) => {
   }
 });
 
-// @route   GET /api/posts/author/:authorId
-// @desc    Get all posts by an author (for subscribers)
+// @route   GET /api/posts/plan/:planId
+// @desc    Get all posts for a specific plan (for subscribers only)
 // @access  Private
-router.get('/author/:authorId', auth, async (req, res) => {
+router.get('/plan/:planId', auth, async (req, res) => {
   try {
-    const { authorId } = req.params;
+    const { planId } = req.params;
+    const Plan = require('../models/Plan');
+    const Subscription = require('../models/Subscription');
 
-    // Get posts
-    const posts = await Post.find({ authorId })
+    // Get plan details
+    const plan = await Plan.findById(planId).populate('authorId', 'displayName email');
+    
+    if (!plan) {
+      return res.status(404).json({ message: 'Plan not found' });
+    }
+
+    // Check if user is subscribed to this plan
+    const subscription = await Subscription.findOne({
+      subscriberId: req.user._id,
+      planId: planId,
+      status: 'active'
+    });
+
+    if (!subscription && req.user._id.toString() !== plan.authorId._id.toString()) {
+      return res.status(403).json({ message: 'You must be subscribed to this plan to view posts' });
+    }
+
+    // Get posts for this plan
+    const posts = await Post.find({ planId })
       .populate('authorId', 'displayName email')
+      .populate('planId', 'tierName pricePerMonth')
       .sort({ createdAt: -1 });
 
     res.json({
       success: true,
+      plan,
       posts
     });
   } catch (error) {
-    console.error('Get author posts error:', error);
+    console.error('Get plan posts error:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });

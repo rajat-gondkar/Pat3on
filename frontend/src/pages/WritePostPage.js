@@ -9,8 +9,9 @@ const WritePostPage = () => {
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    tierAccess: 'all' // all, specific tier
+    planId: '' // Store the plan ID instead of tierAccess
   });
+  const [plans, setPlans] = useState([]);
   const [posting, setPosting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -19,14 +20,31 @@ const WritePostPage = () => {
   React.useEffect(() => {
     if (user && user.role !== 'author') {
       navigate('/dashboard');
+    } else {
+      fetchMyPlans();
     }
   }, [user, navigate]);
+
+  const fetchMyPlans = async () => {
+    try {
+      const response = await api.get('/plans/my-plans');
+      setPlans(response.data.plans || []);
+    } catch (err) {
+      console.error('Failed to fetch plans:', err);
+      setError('Failed to load your plans');
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (!formData.title.trim() || !formData.content.trim()) {
       setError('Title and content are required');
+      return;
+    }
+
+    if (!formData.planId) {
+      setError('Please select a plan');
       return;
     }
 
@@ -38,7 +56,7 @@ const WritePostPage = () => {
       await api.post('/posts/create', formData);
 
       setSuccess('Post published successfully!');
-      setFormData({ title: '', content: '', tierAccess: 'all' });
+      setFormData({ title: '', content: '', planId: '' });
       
       setTimeout(() => {
         navigate('/dashboard');
@@ -123,24 +141,34 @@ const WritePostPage = () => {
               </p>
             </div>
 
-            {/* Tier Access */}
+            {/* Plan Access */}
             <div>
-              <label htmlFor="tierAccess" className="block text-sm font-medium text-gray-300 mb-2">
-                Who can see this post?
+              <label htmlFor="planId" className="block text-sm font-medium text-gray-300 mb-2">
+                Who can see this post? *
               </label>
               <select
-                id="tierAccess"
-                name="tierAccess"
-                value={formData.tierAccess}
+                id="planId"
+                name="planId"
+                value={formData.planId}
                 onChange={handleChange}
                 className="w-full px-4 py-3 bg-dark-primary border border-dark-border rounded-sm text-white focus:outline-none focus:border-white transition-colors"
+                required
               >
-                <option value="all">All Subscribers</option>
-                <option value="premium">Premium Tier Only</option>
+                <option value="">Select a plan...</option>
+                {plans.map((plan) => (
+                  <option key={plan._id} value={plan._id}>
+                    {plan.tierName} (${plan.pricePerMonth}/month)
+                  </option>
+                ))}
               </select>
               <p className="text-xs text-gray-400 mt-2">
-                Choose which subscribers can view this post
+                Only subscribers of the selected plan can view this post
               </p>
+              {plans.length === 0 && (
+                <p className="text-xs text-yellow-400 mt-2">
+                  ⚠️ You need to create a plan first before posting
+                </p>
+              )}
             </div>
 
             {/* Action Buttons */}
