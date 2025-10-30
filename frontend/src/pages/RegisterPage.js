@@ -165,13 +165,13 @@ const RegisterPage = () => {
             <div className="flex space-x-3">
               <button
                 onClick={handleCopyPrivateKey}
-                className="flex-1 bg-white hover:bg-gray-200 text-white px-4 py-3 rounded-sm transition-all flex items-center justify-center font-semibold shadow-lg"
+                className="flex-1 bg-dark-accent hover:bg-dark-border border border-dark-border hover:border-white text-white px-4 py-3 rounded-sm transition-all flex items-center justify-center font-semibold"
               >
                 {copied ? '✓ Copied!' : '📋 Copy Private Key'}
               </button>
               <button
                 onClick={handleDownloadPrivateKey}
-                className="flex-1 bg-dark-accent hover:bg-dark-border text-white px-4 py-3 rounded-sm transition-all flex items-center justify-center font-semibold"
+                className="flex-1 bg-dark-accent hover:bg-dark-border border border-dark-border hover:border-white text-white px-4 py-3 rounded-sm transition-all flex items-center justify-center font-semibold"
               >
                 💾 Download as File
               </button>
@@ -242,10 +242,10 @@ const RegisterPage = () => {
           <button
             onClick={handleContinue}
             disabled={!privateKeySaved}
-            className={`w-full py-4 rounded-sm font-semibold text-white transition-all shadow-lg ${
+            className={`w-full py-4 rounded-sm font-semibold text-white transition-all border ${
               privateKeySaved
-                ? 'bg-white hover:bg-gray-200 hover:shadow-navy-600/30'
-                : 'bg-gray-600 cursor-not-allowed opacity-50'
+                ? 'bg-dark-primary hover:bg-dark-accent border-dark-border hover:border-white'
+                : 'bg-gray-800 border-gray-700 cursor-not-allowed opacity-50'
             }`}
           >
             {privateKeySaved ? 'Continue to Dashboard →' : 'Please Confirm Above First'}
@@ -394,7 +394,7 @@ const RegisterPage = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-white hover:bg-gray-200 text-white py-3 rounded-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-navy-600/30"
+            className="w-full bg-dark-primary hover:bg-dark-accent border border-dark-border hover:border-white text-white py-3 rounded-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Creating Account...' : 'Create Account'}
           </button>
