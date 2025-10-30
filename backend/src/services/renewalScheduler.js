@@ -4,6 +4,7 @@ const Plan = require('../models/Plan');
 const User = require('../models/User');
 const AuthorProfile = require('../models/AuthorProfile');
 const Notification = require('../models/Notification');
+const Transaction = require('../models/Transaction');
 const crypto = require('crypto');
 
 // Encryption setup
@@ -145,6 +146,20 @@ async function processSubscriptionRenewal(subscription) {
     subscription.lastRenewalAttempt = new Date();
     subscription.renewalFailureCount = 0; // Reset failure count on success
     await subscription.save();
+
+    // Create transaction record for renewal
+    const transaction = new Transaction({
+      subscriberId: subscription.subscriberId,
+      authorId: subscription.authorId,
+      subscriptionId: subscription._id,
+      planId: plan._id,
+      amount: plan.pricePerMonth,
+      currency: 'mUSDC',
+      transactionHash: receipt.hash,
+      type: 'renewal',
+      status: 'success'
+    });
+    await transaction.save();
 
     // Create success notification
     await createNotification(

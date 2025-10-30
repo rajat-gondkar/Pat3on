@@ -6,7 +6,7 @@ import api from '../services/api';
 const CreatorProfilePage = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   
   const [profile, setProfile] = useState(null);
   const [plans, setPlans] = useState([]);
@@ -15,10 +15,6 @@ const CreatorProfilePage = () => {
   const [subscribing, setSubscribing] = useState(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-
-  useEffect(() => {
-    fetchCreatorData();
-  }, [userId]);
 
   const fetchCreatorData = async () => {
     try {
@@ -48,6 +44,11 @@ const CreatorProfilePage = () => {
     }
   };
 
+  useEffect(() => {
+    fetchCreatorData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userId]);
+
   const isSubscribedToPlan = (planId) => {
     return userSubscriptions.some(
       sub => sub.plan?._id === planId && sub.status === 'active'
@@ -65,7 +66,7 @@ const CreatorProfilePage = () => {
       setError('');
       setSuccess('');
 
-      const response = await api.post('/subscriptions/subscribe', { planId });
+      await api.post('/subscriptions/subscribe', { planId });
       
       setSuccess('Subscription successful! You are now subscribed.');
       setTimeout(() => {

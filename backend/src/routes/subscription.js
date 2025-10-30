@@ -5,6 +5,7 @@ const Subscription = require('../models/Subscription');
 const Plan = require('../models/Plan');
 const User = require('../models/User');
 const AuthorProfile = require('../models/AuthorProfile');
+const Transaction = require('../models/Transaction');
 const auth = require('../middleware/auth');
 const crypto = require('crypto');
 
@@ -143,6 +144,20 @@ router.post('/subscribe', auth, async (req, res) => {
     });
 
     await subscription.save();
+
+    // Create transaction record
+    const transaction = new Transaction({
+      subscriberId: req.user._id,
+      authorId: plan.authorId,
+      subscriptionId: subscription._id,
+      planId: plan._id,
+      amount: plan.pricePerMonth,
+      currency: 'mUSDC',
+      transactionHash: receipt.hash,
+      type: 'initial_subscription',
+      status: 'success'
+    });
+    await transaction.save();
 
     // Update plan subscriber count
     await Plan.findByIdAndUpdate(planId, { 
@@ -312,15 +327,15 @@ router.patch('/:id/auto-renew', auth, async (req, res) => {
 // @access  Private
 router.get('/payment-history', auth, async (req, res) => {
   try {
-    // Get all subscriptions for the user (both as subscriber and author)
-    const asSubscriber = await Subscription.find({ 
+    // Get all transactions for the user (both as subscriber and author)
+    const asSubscriber = await Transaction.find({ 
       subscriberId: req.user._id 
     })
       .populate('planId')
       .populate('authorId', 'displayName email')
       .sort({ createdAt: -1 });
 
-    const asAuthor = await Subscription.find({ 
+    const asAuthor = await Transaction.find({ 
       authorId: req.user._id 
     })
       .populate('planId')
@@ -330,50 +345,40 @@ router.get('/payment-history', auth, async (req, res) => {
     // Format transactions
     const transactions = [];
 
-    // Add subscriber transactions
-    asSubscriber.forEach(sub => {
-      if (sub.transactionHash) {
-        console.log('Subscriber transaction - Plan data:', {
-          planId: sub.planId?._id,
-          pricePerMonth: sub.planId?.pricePerMonth,
-          tierName: sub.planId?.tierName
-        });
-        transactions.push({
-          id: sub._id,
-          type: 'subscription_payment',
-          direction: 'outgoing',
-          amount: sub.planId?.pricePerMonth || 0,
-          currency: 'mUSDC',
-          date: sub.createdAt,
-          transactionHash: sub.transactionHash,
-          description: `Subscribed to ${sub.authorId?.displayName || 'Unknown Author'}`,
-          plan: sub.planId?.tierName,
-          status: sub.status
-        });
-      }
+    // Add subscriber transactions (outgoing payments)
+    asSubscriber.forEach(txn => {
+      transactions.push({
+        id: txn._id,
+        type: txn.type === 'initial_subscription' ? 'subscription_payment' : 'renewal_payment',
+        direction: 'outgoing',
+        amount: txn.amount,
+        currency: txn.currency,
+        date: txn.createdAt,
+        transactionHash: txn.transactionHash,
+        description: txn.type === 'initial_subscription' 
+          ? `Subscribed to ${txn.authorId?.displayName || 'Unknown Author'}`
+          : `Renewed subscription to ${txn.authorId?.displayName || 'Unknown Author'}`,
+        plan: txn.planId?.tierName,
+        status: txn.status
+      });
     });
 
-    // Add author transactions (income)
-    asAuthor.forEach(sub => {
-      if (sub.transactionHash) {
-        console.log('Author transaction - Plan data:', {
-          planId: sub.planId?._id,
-          pricePerMonth: sub.planId?.pricePerMonth,
-          tierName: sub.planId?.tierName
-        });
-        transactions.push({
-          id: sub._id,
-          type: 'subscription_received',
-          direction: 'incoming',
-          amount: sub.planId?.pricePerMonth || 0,
-          currency: 'mUSDC',
-          date: sub.createdAt,
-          transactionHash: sub.transactionHash,
-          description: `Received from ${sub.subscriberId?.displayName || 'Anonymous User'}`,
-          plan: sub.planId?.tierName,
-          status: sub.status
-        });
-      }
+    // Add author transactions (incoming payments)
+    asAuthor.forEach(txn => {
+      transactions.push({
+        id: txn._id,
+        type: txn.type === 'initial_subscription' ? 'subscription_received' : 'renewal_received',
+        direction: 'incoming',
+        amount: txn.amount,
+        currency: txn.currency,
+        date: txn.createdAt,
+        transactionHash: txn.transactionHash,
+        description: txn.type === 'initial_subscription'
+          ? `Received from ${txn.subscriberId?.displayName || 'Anonymous User'}`
+          : `Renewal from ${txn.subscriberId?.displayName || 'Anonymous User'}`,
+        plan: txn.planId?.tierName,
+        status: txn.status
+      });
     });
 
     // Sort all transactions by date

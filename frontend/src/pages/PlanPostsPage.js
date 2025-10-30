@@ -1,20 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 
 const PlanPostsPage = () => {
   const { planId } = useParams();
   const { user } = useAuth();
-  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [plan, setPlan] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
-    fetchPlanPosts();
-  }, [planId]);
 
   const fetchPlanPosts = async () => {
     try {
@@ -24,12 +19,16 @@ const PlanPostsPage = () => {
       setPosts(response.data.posts || []);
       setPlan(response.data.plan);
     } catch (err) {
-      console.error('Error fetching posts:', err);
-      setError(err.response?.data?.message || 'Failed to load posts');
+      console.error('Error fetching plan posts:', err);
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchPlanPosts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [planId]);
 
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
