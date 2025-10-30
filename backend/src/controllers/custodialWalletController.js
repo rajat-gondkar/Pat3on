@@ -249,10 +249,87 @@ const getMasterWalletBalance = async (req, res) => {
   }
 };
 
+/**
+ * @desc    Withdraw mUSDC from custodial wallet
+ * @route   POST /api/custodial-wallet/withdraw
+ * @access  Private
+ */
+const withdrawMockUSDC = async (req, res) => {
+  try {
+    const { toAddress, amount } = req.body;
+    
+    // Validation
+    if (!toAddress || !toAddress.startsWith('0x') || toAddress.length !== 42) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid Ethereum address'
+      });
+    }
+    
+    if (!amount || amount <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid amount'
+      });
+    }
+    
+    const user = await User.findById(req.user.id);
+    
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found'
+      });
+    }
+    
+    if (!user.hasCustodialWallet) {
+      return res.status(404).json({
+        success: false,
+        message: 'User does not have a custodial wallet'
+      });
+    }
+    
+    // Check balance
+    const currentBalance = await walletService.getMockUSDCBalance(user.custodialWallet.address);
+    if (parseFloat(currentBalance) < parseFloat(amount)) {
+      return res.status(400).json({
+        success: false,
+        message: `Insufficient balance. You have ${currentBalance} mUSDC`
+      });
+    }
+    
+    // Execute withdrawal
+    console.log(`💸 Withdrawing ${amount} mUSDC from ${user.custodialWallet.address} to ${toAddress}`);
+    const result = await walletService.withdrawMockUSDC(
+      user.custodialWallet.encryptedPrivateKey,
+      toAddress,
+      amount
+    );
+    
+    console.log('✅ Withdrawal successful:', result.transactionHash);
+    
+    res.json({
+      success: true,
+      message: 'Withdrawal successful',
+      transactionHash: result.transactionHash,
+      amount: amount,
+      to: toAddress
+    });
+  } catch (error) {
+    console.error('Error withdrawing mUSDC:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Withdrawal failed',
+      error: error.message
+    });
+  }
+};
+
 module.exports = {
   createCustodialWallet,
   getCustodialWalletInfo,
   getDepositAddress,
   fundCustodialWalletETH,
-  getMasterWalletBalance
+  getMasterWalletBalance,
+  withdrawMockUSDC
 };

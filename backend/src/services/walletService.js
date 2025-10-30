@@ -322,6 +322,59 @@ async function deleteSuperfluidStream(encryptedPrivateKey, recipient) {
 }
 
 /**
+ * Withdraw MockUSDC from custodial wallet to external address
+ * @param {Object} encryptedPrivateKey - User's encrypted private key
+ * @param {string} toAddress - Recipient address
+ * @param {string} amount - Amount in USDC
+ * @returns {Object} Transaction details
+ */
+async function withdrawMockUSDC(encryptedPrivateKey, toAddress, amount) {
+  try {
+    const wallet = getWalletFromEncrypted(encryptedPrivateKey);
+    
+    const mockUSDCABI = [
+      "function transfer(address to, uint256 amount) returns (bool)",
+      "function balanceOf(address account) view returns (uint256)",
+      "function decimals() view returns (uint8)"
+    ];
+    
+    const mockUSDC = new ethers.Contract(
+      process.env.MOCK_USDC_ADDRESS,
+      mockUSDCABI,
+      wallet
+    );
+    
+    // Convert amount to proper decimals (6 for USDC)
+    const amountInWei = ethers.parseUnits(amount.toString(), 6);
+    
+    // Check balance
+    const balance = await mockUSDC.balanceOf(wallet.address);
+    if (balance < amountInWei) {
+      throw new Error('Insufficient MockUSDC balance');
+    }
+    
+    // Send transaction
+    console.log(`💸 Withdrawing ${amount} mUSDC to ${toAddress}`);
+    const tx = await mockUSDC.transfer(toAddress, amountInWei);
+    console.log(`📤 Transaction sent: ${tx.hash}`);
+    
+    const receipt = await tx.wait();
+    console.log(`✅ Withdrawal confirmed! Block: ${receipt.blockNumber}`);
+    
+    return {
+      success: true,
+      transactionHash: tx.hash,
+      blockNumber: receipt.blockNumber,
+      amount,
+      to: toAddress
+    };
+  } catch (error) {
+    console.error('Error withdrawing MockUSDC:', error);
+    throw new Error(`Withdrawal failed: ${error.message}`);
+  }
+}
+
+/**
  * Get master wallet balance (for monitoring)
  */
 async function getMasterWalletBalance() {
@@ -347,6 +400,7 @@ module.exports = {
   approveMockUSDC,
   createSuperfluidStream,
   deleteSuperfluidStream,
+  withdrawMockUSDC,
   getMasterWalletBalance,
   encryptPrivateKey,
   decryptPrivateKey

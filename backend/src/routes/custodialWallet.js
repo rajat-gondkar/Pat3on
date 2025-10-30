@@ -5,7 +5,8 @@ const {
   getCustodialWalletInfo,
   getDepositAddress,
   fundCustodialWalletETH,
-  getMasterWalletBalance
+  getMasterWalletBalance,
+  withdrawMockUSDC
 } = require('../controllers/custodialWalletController');
 const auth = require('../middleware/auth');
 
@@ -26,5 +27,8 @@ router.post('/fund-eth', fundCustodialWalletETH);
 
 // Get master wallet balance (admin/monitoring)
 router.get('/master-balance', getMasterWalletBalance);
+
+// Withdraw mUSDC
+router.post('/withdraw', withdrawMockUSDC);
 
 module.exports = router;

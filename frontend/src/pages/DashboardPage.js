@@ -1,11 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
+import api from '../services/api';
 
 const DashboardPage = () => {
   const { user, balances, refreshBalances, loading } = useAuth();
   const navigate = useNavigate();
-  const [copiedAddress, setCopiedAddress] = React.useState(false);
+  const [copiedAddress, setCopiedAddress] = useState(false);
+  const [showWithdrawModal, setShowWithdrawModal] = useState(false);
+  const [withdrawAddress, setWithdrawAddress] = useState('');
+  const [withdrawAmount, setWithdrawAmount] = useState('');
+  const [withdrawing, setWithdrawing] = useState(false);
+  const [withdrawError, setWithdrawError] = useState('');
+  const [withdrawSuccess, setWithdrawSuccess] = useState('');
 
   useEffect(() => {
     if (!loading && !user) {
@@ -17,6 +24,51 @@ const DashboardPage = () => {
     navigator.clipboard.writeText(user.walletAddress);
     setCopiedAddress(true);
     setTimeout(() => setCopiedAddress(false), 2000);
+  };
+
+  const handleWithdraw = async () => {
+    setWithdrawError('');
+    setWithdrawSuccess('');
+
+    // Validation
+    if (!withdrawAddress || !withdrawAddress.startsWith('0x') || withdrawAddress.length !== 42) {
+      setWithdrawError('Please enter a valid Ethereum address');
+      return;
+    }
+
+    const amount = parseFloat(withdrawAmount);
+    if (!amount || amount <= 0) {
+      setWithdrawError('Please enter a valid amount');
+      return;
+    }
+
+    if (amount > parseFloat(balances.usdc)) {
+      setWithdrawError('Insufficient balance');
+      return;
+    }
+
+    try {
+      setWithdrawing(true);
+      const response = await api.post('/custodial-wallet/withdraw', {
+        toAddress: withdrawAddress,
+        amount: amount
+      });
+
+      setWithdrawSuccess(`Successfully withdrew ${amount} mUSDC! Transaction: ${response.data.transactionHash}`);
+      setWithdrawAddress('');
+      setWithdrawAmount('');
+      
+      // Refresh balances after 3 seconds
+      setTimeout(() => {
+        refreshBalances();
+        setShowWithdrawModal(false);
+        setWithdrawSuccess('');
+      }, 3000);
+    } catch (error) {
+      setWithdrawError(error.response?.data?.message || 'Withdrawal failed. Please try again.');
+    } finally {
+      setWithdrawing(false);
+    }
   };
 
   if (loading || !user) {
@@ -97,15 +149,23 @@ const DashboardPage = () => {
               </button>
             </div>
             {balances ? (
-              <div className="bg-dark-primary p-4 rounded-sm border border-dark-border hover:border-white transition-colors">
-                <div className="text-gray-400 text-sm mb-1">Mock USDC</div>
-                <div className="text-2xl font-bold text-white">
-                  {parseFloat(balances.usdc).toFixed(2)} mUSDC
+              <>
+                <div className="bg-dark-primary p-4 rounded-sm border border-dark-border hover:border-white transition-colors mb-3">
+                  <div className="text-gray-400 text-sm mb-1">Mock USDC</div>
+                  <div className="text-2xl font-bold text-white">
+                    {parseFloat(balances.usdc).toFixed(2)} mUSDC
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    For subscriptions
+                  </div>
                 </div>
-                <div className="text-xs text-gray-500 mt-1">
-                  For subscriptions
-                </div>
-              </div>
+                <button
+                  onClick={() => setShowWithdrawModal(true)}
+                  className="w-full bg-dark-accent hover:bg-dark-border border border-dark-border hover:border-white text-white py-2 rounded-sm transition-all font-semibold text-sm"
+                >
+                  💸 Withdraw mUSDC
+                </button>
+              </>
             ) : (
               <div className="text-gray-400">Loading balance...</div>
             )}
@@ -113,7 +173,7 @@ const DashboardPage = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className={`grid gap-6 ${user.role === 'author' ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}>
           {user.role === 'author' ? (
             <>
               <Link to="/create-plan" className="bg-dark-secondary rounded-sm shadow-xl p-6 border border-dark-border hover:border-white transition-all cursor-pointer group">
@@ -132,15 +192,6 @@ const DashboardPage = () => {
                 </h3>
                 <p className="text-gray-400 text-sm">
                   Share content with your subscribers
-                </p>
-              </Link>
-              <Link to="/analytics" className="bg-dark-secondary rounded-sm shadow-xl p-6 border border-dark-border hover:border-white transition-all cursor-pointer group">
-                <div className="text-3xl mb-3 group-hover:scale-110 transition-transform">📊</div>
-                <h3 className="text-lg font-semibold text-white mb-2">
-                  Analytics
-                </h3>
-                <p className="text-gray-400 text-sm">
-                  Track your earnings and growth
                 </p>
               </Link>
             </>
@@ -206,6 +257,107 @@ const DashboardPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Withdraw Modal */}
+      {showWithdrawModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 px-4">
+          <div className="bg-dark-secondary border border-dark-border rounded-sm p-8 max-w-md w-full">
+            <h2 className="text-2xl font-bold text-white mb-4">💸 Withdraw mUSDC</h2>
+            
+            {/* Warning */}
+            <div className="bg-yellow-500/10 border border-yellow-500/40 rounded-sm p-4 mb-6">
+              <p className="text-yellow-400 text-sm font-semibold mb-2">⚠️ Important Warning</p>
+              <p className="text-yellow-300 text-xs">
+                Make sure the receiving address is on the <strong>Ethereum Sepolia Testnet</strong>. 
+                Sending to mainnet or other networks will result in loss of funds!
+              </p>
+            </div>
+
+            {/* Current Balance */}
+            <div className="bg-dark-primary p-3 rounded-sm border border-dark-border mb-4">
+              <p className="text-gray-400 text-xs mb-1">Available Balance</p>
+              <p className="text-white text-lg font-bold">
+                {parseFloat(balances?.usdc || 0).toFixed(2)} mUSDC
+              </p>
+            </div>
+
+            {/* Recipient Address */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Recipient Address
+              </label>
+              <input
+                type="text"
+                value={withdrawAddress}
+                onChange={(e) => setWithdrawAddress(e.target.value)}
+                placeholder="0x..."
+                className="w-full px-4 py-3 bg-dark-primary border border-dark-border rounded-sm text-white placeholder-gray-500 focus:outline-none focus:border-white transition-all"
+              />
+            </div>
+
+            {/* Amount */}
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Amount (mUSDC)
+              </label>
+              <input
+                type="number"
+                value={withdrawAmount}
+                onChange={(e) => setWithdrawAmount(e.target.value)}
+                placeholder="0.00"
+                step="0.01"
+                min="0"
+                max={balances?.usdc || 0}
+                className="w-full px-4 py-3 bg-dark-primary border border-dark-border rounded-sm text-white placeholder-gray-500 focus:outline-none focus:border-white transition-all"
+              />
+              <button
+                onClick={() => setWithdrawAmount(balances?.usdc || '0')}
+                className="text-xs text-gray-400 hover:text-white mt-2 transition-colors"
+              >
+                Max: {parseFloat(balances?.usdc || 0).toFixed(2)} mUSDC
+              </button>
+            </div>
+
+            {/* Error Message */}
+            {withdrawError && (
+              <div className="bg-red-500/10 border border-red-500/40 text-red-400 px-4 py-3 rounded-sm mb-4 text-sm">
+                {withdrawError}
+              </div>
+            )}
+
+            {/* Success Message */}
+            {withdrawSuccess && (
+              <div className="bg-green-500/10 border border-green-500/40 text-green-400 px-4 py-3 rounded-sm mb-4 text-sm">
+                {withdrawSuccess}
+              </div>
+            )}
+
+            {/* Buttons */}
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setShowWithdrawModal(false);
+                  setWithdrawAddress('');
+                  setWithdrawAmount('');
+                  setWithdrawError('');
+                  setWithdrawSuccess('');
+                }}
+                disabled={withdrawing}
+                className="flex-1 bg-dark-accent hover:bg-dark-border border border-dark-border text-white py-3 rounded-sm transition-all font-semibold disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleWithdraw}
+                disabled={withdrawing || !withdrawAddress || !withdrawAmount}
+                className="flex-1 bg-dark-primary hover:bg-dark-accent border border-dark-border hover:border-white text-white py-3 rounded-sm transition-all font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {withdrawing ? 'Processing...' : 'Withdraw'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
