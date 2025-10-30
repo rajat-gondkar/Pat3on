@@ -18,7 +18,7 @@ const HomePage = () => {
       <div className="min-h-screen flex items-center justify-center px-6">
         <div className="text-center max-w-4xl mx-auto">
           <p className="text-gray-400 text-sm uppercase tracking-wider mb-6">
-            WE ARE LAUNCHING OUR PLATFORM SOON.
+            WELCOME TO THE FUTURE OF CREATOR SUPPORT — POWERED BY WEB3:
           </p>
           
           <h1 className="text-7xl md:text-8xl font-bold text-white mb-12 tracking-tight">

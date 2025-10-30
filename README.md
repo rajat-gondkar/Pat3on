@@ -41,26 +41,64 @@ Pat3on connects content creators with their supporters through blockchain techno
 ## 🎨 Key Features
 
 ### ✨ Automatic Recurring Payments
-Once you subscribe, payments flow automatically every month - no need to manually approve transactions each time. This is powered by **Superfluid Protocol**, which enables real-time money streaming.
+Once you subscribe, payments flow automatically every 5 minutes - no need to manually approve transactions each time. The system automatically renews subscriptions when they expire, ensuring uninterrupted access to creator content.
 
 ### 🔐 Custodial Wallets
 Don't have a crypto wallet? No problem! Pat3on creates one for you automatically when you sign up. Your wallet is:
-- Encrypted and stored securely
+- Encrypted and stored securely using AES-256-GCM
 - Automatically funded with gas fees
 - Easy to export if you want to use it elsewhere
 
-### 📱 Creator Dashboard
+### � Creator Dashboard
 Creators can:
 - Create multiple subscription tiers (Basic, Premium, VIP, etc.)
-- Set custom pricing for each tier
-- View subscriber count and earnings
-- Manage their content and perks
+- Set custom pricing per 5 minutes for quick demo cycles
+- View clickable plans that link to their posts
+- Write exclusive posts for specific subscription tiers
+- Activate/deactivate plans as needed
+- Edit profile with bio, social links, and profile image
 
-### 🎯 Subscription Tiers
-Like Patreon's membership levels, creators can offer different tiers with varying benefits:
-- **Basic** - $5/month - Access to exclusive posts
-- **Premium** - $15/month - Early access + Discord role
-- **VIP** - $50/month - One-on-one sessions + all benefits
+### 🎯 Subscription Tiers & Plan-Specific Content
+Like Patreon's membership levels, creators can offer different tiers with exclusive content:
+- Create subscription plans with custom names and pricing
+- Write posts exclusive to specific plans
+- Subscribers access posts by clicking plan names
+- Automatic access control - only active subscribers can view posts
+- Creators can always view their own content
+
+### 📊 Payment History
+Complete transaction tracking for both users and creators:
+- View all subscription payments (initial + renewals)
+- Separate tracking for money spent and earned
+- Filter by transaction type (incoming/outgoing)
+- Direct links to Etherscan for verification
+- Shows renewal transactions automatically tracked
+
+### 🔔 Real-Time Notifications
+Stay updated with:
+- Subscription renewal confirmations
+- Failed payment alerts
+- Subscription deletion notices
+- Live countdown timers showing time until renewal
+- Notification bell in header with unread count
+
+### 👤 User Features
+**For Subscribers:**
+- Browse all creators and their plans
+- Subscribe with one click
+- View only active subscriptions (expired ones hidden)
+- See time remaining until next renewal (minutes & seconds)
+- Toggle auto-renewal on/off
+- Cancel subscriptions anytime
+- Access exclusive posts for subscribed plans
+
+**For Creators:**
+- Profile settings with custom bio and social links
+- Create unlimited subscription plans
+- Write posts for specific plan tiers
+- View posts by clicking plan names
+- Track subscriber counts per plan
+- Payment history with detailed analytics
 
 ---
 
